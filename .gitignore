@@ -1,0 +1,7 @@
+tmp/*
+*.o
+moc*
+task/*
+date/*
+tomato
+tomato.bak

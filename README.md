@@ -1,2 +1,2 @@
 # tomato
-一个使用番茄时钟的软件
+This is a qt4 program.And it is a pomodoro time.
