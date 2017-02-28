@@ -5,3 +5,4 @@ task/*
 date/*
 tomato
 tomato.bak
+Makefile
