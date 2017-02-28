@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class TomatoClock;
+class TaskDialog;
 
 class QTabWidget;
 class QMenu;
@@ -21,6 +22,7 @@ private slots:
 private:
 	QTabWidget* mainWidget;
 	TomatoClock* tomatoClock;
+	TaskDialog* taskDialog;
 
 	QMenu* fileMenu;
 	QAction* addTask;

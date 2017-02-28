@@ -10,11 +10,13 @@ INCLUDEPATH += . include
 # Input
 HEADERS += include/main_window.h \
 		   include/time_label.h \
-		   include/tomato_clock.h
+		   include/tomato_clock.h \
+		   include/task_dialog.h
 SOURCES += src/main.cpp \
            src/main_window.cpp \
            src/time_label.cpp \
-           src/tomato_clock.cpp
+           src/tomato_clock.cpp \
+		   src/task_dialog.cpp
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp

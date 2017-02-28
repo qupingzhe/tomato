@@ -1,6 +1,7 @@
 #include "main_window.h"
 
 #include "tomato_clock.h"
+#include "task_dialog.h"
 
 #include <QTabWidget>
 #include <QMenuBar>
@@ -24,6 +25,11 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 
 	connect( tomatoClock, SIGNAL(start()),
 			this, SLOT(doStart()) );
+
+	taskDialog = new TaskDialog;
+
+	connect( addTask, SIGNAL(triggered()),
+			taskDialog, SLOT(show()) );
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -33,6 +39,7 @@ TomatoMainWindow::~TomatoMainWindow( void )
 	delete tomatoClock;
 	delete mainWidget;
 	delete timer;
+	delete taskDialog;
 }
 
 void TomatoMainWindow::doStart( void )
