@@ -3,30 +3,37 @@
 
 #include <QMainWindow>
 
-class TomatoClock;
-class TaskDialog;
+class QTomato;
+class TaskWidget;
+class NewTaskDialog;
+class TimeDialog;
 
 class QTabWidget;
 class QMenu;
 class QAction;
-class QTimer;
 
 class TomatoMainWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
 	TomatoMainWindow( QWidget* parent = NULL );
+	void createMenuBar( void );
 	~TomatoMainWindow( void );
 private slots:
 	void doStart( void );
+	void finishRest( void );
+	void finishWork( void );
 private:
+	QTomato* tomato;
 	QTabWidget* mainWidget;
-	TomatoClock* tomatoClock;
-	TaskDialog* taskDialog;
+	TaskWidget* taskWidget;
+	TimeDialog* workingDialog;
+	TimeDialog* restingDialog;
+
+	NewTaskDialog* newTaskDialog;
 
 	QMenu* fileMenu;
 	QAction* addTask;
-	QTimer* timer;
 };
 
 #endif

@@ -1,11 +1,12 @@
-#include "task_dialog.h"
+#include "new_task_dialog.h"
 
 #include <QLabel>
+#include <QPushButton>
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QFormLayout>
 
-TaskDialog::TaskDialog( QWidget* parent ) : QDialog( parent )
+NewTaskDialog::NewTaskDialog( QWidget* parent ) : QDialog( parent )
 {
 	mainLayout = new QFormLayout;
 
@@ -25,10 +26,19 @@ TaskDialog::TaskDialog( QWidget* parent ) : QDialog( parent )
 	needingTime = new QSpinBox;
 	mainLayout->addRow( needingTimeLabel, needingTime );
 
+	addButton = new QPushButton( tr("Add") );
+	cancelButton = new QPushButton( tr("Cancel") );
+	mainLayout->addRow( addButton, cancelButton );
+
 	setLayout( mainLayout );
+
+	connect( addButton, SIGNAL(clicked()),
+			this, SLOT(add()) );
+	connect( cancelButton, SIGNAL(clicked()),
+			this, SLOT(cancel()) );
 }
 
-TaskDialog::~TaskDialog( void )
+NewTaskDialog::~NewTaskDialog( void )
 {
 	delete classificationLabel;
 	delete classification;
@@ -38,4 +48,22 @@ TaskDialog::~TaskDialog( void )
 	delete taskName;
 	delete needingTimeLabel;
 	delete needingTime;
+	delete addButton;
+	delete cancelButton;
+}
+
+void NewTaskDialog::add( void )
+{
+	QTask qtask;
+	qtask.classification = classification->displayText();
+	qtask.tag = tag->displayText();
+	qtask.name = taskName->displayText();
+	qtask.needingTime = needingTime->value();
+	emit addTask( qtask );
+	cancel();
+}
+
+void NewTaskDialog::cancel( void )
+{
+	this->hide();
 }

@@ -1,19 +1,26 @@
-#ifndef TASK_DIALOG_H
-#define TASK_DIALOG_H
+#ifndef NEW_TASK_DIALOG_H
+#define NEW_TASK_DIALOG_H
 
 #include <QDialog>
+#include "qtask.h"
 
 class QLabel;
 class QLineEdit;
 class QSpinBox;
 class QFormLayout;
+class QPushButton;
 
-class TaskDialog : public QDialog
+class NewTaskDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	TaskDialog( QWidget* parent = NULL );
-	~TaskDialog( void );
+	NewTaskDialog( QWidget* parent = NULL );
+	~NewTaskDialog( void );
+signals:
+	void addTask( QTask qtask );
+private slots:
+	void add( void );
+	void cancel( void );
 private:
 	QLabel* classificationLabel;
 	QLineEdit* classification;
@@ -25,6 +32,8 @@ private:
 	QSpinBox* needingTime;
 
 	QFormLayout* mainLayout;
+	QPushButton* addButton;
+	QPushButton* cancelButton;
 };
 
 #endif
