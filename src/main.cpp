@@ -9,6 +9,9 @@ int main( int argc, char** argv )
 	const wchar_t* s= L"记得置顶！！！！！！！！！！！！！！";
 	std::wcout << s << std::endl;
 	TomatoMainWindow* mainWindow = new TomatoMainWindow;
+	//TomatoMainWindow mainWindow;
 	mainWindow->show();
-	return app.exec();
+	int rs = app.exec();
+	delete mainWindow;
+	return rs;
 }

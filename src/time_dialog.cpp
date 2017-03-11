@@ -11,6 +11,12 @@ TimeDialog::TimeDialog( void )
 
 }
 
+TimeDialog::~TimeDialog( void )
+{
+	delete layout;
+	delete label;
+}
+
 void TimeDialog::changeTime( int time )
 {
 	label->setText( timeToString(time) );

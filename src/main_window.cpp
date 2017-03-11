@@ -52,17 +52,23 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			workingDialog, SLOT(changeTime(int)) );
 	connect( tomato, SIGNAL(changeTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
+
+	tomato->load();
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
 {
 	delete addTask;
 	delete fileMenu;
+	delete newTaskDialog;
+
 	delete taskWidget;
+
 	delete workingDialog;
 	delete restingDialog;
+
 	delete mainWidget;
-	delete newTaskDialog;
+	delete tomato;
 }
 
 void TomatoMainWindow::createMenuBar( void )

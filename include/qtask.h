@@ -1,22 +1,18 @@
 #ifndef Q_TASK_H
 #define Q_TASK_H
-#include "tomato.h"
+#include "task.h"
 #include <QString>
 
-class QTask
+class QTask : public BasicTask
 {
 public:
 	QTask( void );
 	QTask( Task task );
+	~QTask( void );
 	Task toTask( void );
 
-	int id;
-	QString classification;
 	QString tag;
 	QString name;
-	int needingTime;
-	bool choosed;
-	bool finished;
 };
 
 #endif

@@ -2,6 +2,8 @@
 
 #include <QTimer>
 
+#include <iostream>
+
 QTomato::QTomato( void )
 {
 	tomato = new Tomato();
@@ -13,8 +15,16 @@ QTomato::QTomato( void )
 
 QTomato::~QTomato( void )
 {
+	std::wcout << L"~QTomato" << std::endl;
 	delete tomato;
 	delete timer;
+}
+
+void QTomato::load( void )
+{
+	for( int i=1; i<= Task::ID; ++i ) {
+		emit getTask( QTask(tomato->getTask(i)) );
+	}
 }
 
 void QTomato::setTime( int workTime, int restTime )
@@ -58,7 +68,7 @@ void QTomato::start( void )
 	if( remainingTime > 0 ) {
 		emit changeTime( remainingTime-restTime );
 		timer->start( 1000 );
-		tomato->start();
+		tomato->start( workTime, restTime);
 	}
 }
 

@@ -1,24 +1,12 @@
 #ifndef TOMATO_H
 #define TOMATO_H
 
-#include <string>
 #include <map>
-
-struct Task
-{
-	int id;
-	std::wstring classification;
-	std::wstring tag;
-	std::wstring name;
-	int needingTime;
-	bool choosed;
-	bool finished;
-};
+#include "task.h"
 
 class Tomato
 {
 public:
-	static int ID;
 	Tomato( void );
 	~Tomato( void );
 
@@ -28,7 +16,7 @@ public:
 
 	void chooseTask( int id );
 	void finishTask( int id );
-	void start( void );
+	void start( int woringTime, int restingTime );
 
 private:
 	std::map<int,Task> tasks;

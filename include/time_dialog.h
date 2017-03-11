@@ -12,6 +12,7 @@ class TimeDialog : public QDialog
 	Q_OBJECT
 public:
 	TimeDialog( void );
+	~TimeDialog( void );
 	static QString timeToString( int time )
 	{
 		int s_min = time/60;

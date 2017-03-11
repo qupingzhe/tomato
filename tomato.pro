@@ -12,6 +12,7 @@ HEADERS += include/main_window.h \
            include/new_task_dialog.h \
            include/qtask.h \
            include/qtomato.h \
+		   include/task.h \
            include/task_widget.h \
            include/time_dialog.h \
            include/tomato.h
@@ -20,6 +21,7 @@ SOURCES += src/main.cpp \
            src/new_task_dialog.cpp \
 		   src/qtask.cpp \
            src/qtomato.cpp \
+		   src/task.cpp \
            src/task_widget.cpp \
            src/time_dialog.cpp \
            src/tomato.cpp

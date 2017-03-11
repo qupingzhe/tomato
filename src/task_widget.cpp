@@ -7,7 +7,6 @@
 #include <QLabel>
 #include <QCheckBox>
 
-#include <iostream>
 GroupTask::GroupTask( QTask qtask, TaskWidget* parent )
 {
 	id = qtask.id;
@@ -24,6 +23,14 @@ GroupTask::GroupTask( QTask qtask, TaskWidget* parent )
 			this, SLOT(finishTask(int)) );
 	connect( chooseTaskCheck, SIGNAL(stateChanged(int)),
 			this, SLOT(chooseTask(int)) );
+}
+
+GroupTask::~GroupTask( void )
+{
+	id = 0;
+	delete taskName;
+	delete finishTaskCheck;
+	delete chooseTaskCheck;
 }
 
 void GroupTask::finishTask( int state )
@@ -68,6 +75,19 @@ TaskWidget::TaskWidget( void )
 	mainLayout->addLayout( leftLayout );
 	mainLayout->addLayout( midLayout );
 	setLayout( mainLayout );
+}
+
+TaskWidget::~TaskWidget( void )
+{
+	delete midLayout;
+	delete leftLayout;
+	delete mainLayout;
+
+	delete startButton;
+	delete restingTime;
+	delete workingTime;
+	taskGroup.clear();
+	taskList.clear();
 }
 
 void TaskWidget::finishChildTask( int id )

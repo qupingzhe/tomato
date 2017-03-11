@@ -22,12 +22,12 @@ private slots:
 	void add( void );
 	void cancel( void );
 private:
-	QLabel* classificationLabel;
-	QLineEdit* classification;
 	QLabel* tagLabel;
 	QLineEdit* tag;
+
 	QLabel* taskNameLabel;
 	QLineEdit* taskName;
+
 	QLabel* needingTimeLabel;
 	QSpinBox* needingTime;
 

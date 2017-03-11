@@ -10,10 +10,6 @@ NewTaskDialog::NewTaskDialog( QWidget* parent ) : QDialog( parent )
 {
 	mainLayout = new QFormLayout;
 
-	classificationLabel = new QLabel( tr("classification") );
-	classification = new QLineEdit;
-	mainLayout->addRow( classificationLabel, classification);
-
 	tagLabel = new QLabel( tr("tag") );
 	tag = new QLineEdit;
 	mainLayout->addRow( tagLabel, tag );
@@ -40,22 +36,23 @@ NewTaskDialog::NewTaskDialog( QWidget* parent ) : QDialog( parent )
 
 NewTaskDialog::~NewTaskDialog( void )
 {
-	delete classificationLabel;
-	delete classification;
-	delete tagLabel;
-	delete tag;
-	delete taskNameLabel;
-	delete taskName;
-	delete needingTimeLabel;
-	delete needingTime;
+	delete mainLayout;
 	delete addButton;
 	delete cancelButton;
+
+	delete tagLabel;
+	delete tag;
+
+	delete taskNameLabel;
+	delete taskName;
+
+	delete needingTimeLabel;
+	delete needingTime;
 }
 
 void NewTaskDialog::add( void )
 {
 	QTask qtask;
-	qtask.classification = classification->displayText();
 	qtask.tag = tag->displayText();
 	qtask.name = taskName->displayText();
 	qtask.needingTime = needingTime->value();

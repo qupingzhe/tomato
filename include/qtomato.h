@@ -14,6 +14,7 @@ class QTomato : public QObject
 public:
 	QTomato( void );
 	void setTime( int workTime, int restTime );
+	void load( void );
 	~QTomato( void );
 signals:
 	void finishWork( void );

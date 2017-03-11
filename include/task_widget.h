@@ -22,6 +22,7 @@ class GroupTask : public QHBoxLayout
 	Q_OBJECT
 public:
 	GroupTask( QTask qtask, TaskWidget* parent);
+	~GroupTask( void );
 public slots:
 	void chooseTask( int id );
 	void finishTask( int id );
@@ -39,6 +40,7 @@ class TaskWidget : public QWidget
 	Q_OBJECT
 public:
 	TaskWidget( void );
+	~TaskWidget( void );
 	void finishChildTask( int id );
 	void chooseChildTask( int id );
 signals:

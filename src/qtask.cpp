@@ -1,33 +1,27 @@
 #include "qtask.h"
 
-QTask::QTask( void )
+QTask::QTask( void ) : BasicTask( 0, 0, 1, false, false )
 {
+	;
 }
 
-QTask::QTask( Task task )
+QTask::QTask( Task task ) : BasicTask( task )
 {
-	id = task.id;
-
-	classification = QString::fromStdWString(task.classification);
 	tag = QString::fromStdWString(task.tag);
 	name = QString::fromStdWString(task.name);
+}
 
-	needingTime = task.needingTime;
-	choosed = task.choosed;
-	finished = task.finished;
+QTask::~QTask( void )
+{
+	;
 }
 
 Task QTask::toTask( void )
 {
-	Task task;
-	task.id = id;
+	Task task(*this);
 	
-	task.classification = classification.toStdWString();
 	task.tag = tag.toStdWString();
 	task.name = name.toStdWString();
 
-	task.needingTime = needingTime;
-	task.choosed = choosed;
-	task.finished = finished;
 	return task;
 }
