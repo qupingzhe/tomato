@@ -11,12 +11,23 @@ GroupTask::GroupTask( QTask qtask, TaskWidget* parent )
 {
 	id = qtask.id;
 	this->parent = parent;
-	taskName = new QLabel( qtask.name );
-	finishTaskCheck = new QCheckBox;
-	chooseTaskCheck = new QCheckBox;
 
+	finishTaskCheck = new QCheckBox;
 	addWidget( finishTaskCheck );
+
+	usingTime = new QLabel( QString::number(qtask.usingTime) );
+	addWidget( usingTime );
+	
+	needingTime = new QLabel( QString::number(qtask.needingTime) );
+	addWidget( needingTime );
+
+	taskTag = new QLabel( qtask.tag );
+	addWidget( taskTag );
+
+	taskName = new QLabel( qtask.name );
 	addWidget( taskName );
+
+	chooseTaskCheck = new QCheckBox;
 	addWidget( chooseTaskCheck );
 
 	connect( finishTaskCheck, SIGNAL(stateChanged(int)),
@@ -42,9 +53,7 @@ void GroupTask::finishTask( int state )
 
 void GroupTask::chooseTask( int state )
 {
-	if( state == Qt::Checked ) {
-		parent->chooseChildTask( id );
-	}
+	parent->chooseChildTask( id );
 }
 
 
@@ -60,12 +69,25 @@ TaskWidget::TaskWidget( void )
 	connect( startButton, SIGNAL(clicked()),
 			this, SLOT(doStart()) );
 	midLayout = new QVBoxLayout;
+	midLayout->addStretch( 0 );
 	midLayout->addWidget( workingTime );
 	midLayout->addWidget( restingTime );
 	midLayout->addWidget( startButton );
+	midLayout->addStretch( 0 );
 
 	leftLayout = new QVBoxLayout;
-	leftLayout->addWidget( new QLabel(tr("fasdfasdfasdfadsf")) );
+
+	QHBoxLayout* taskTitle = new QHBoxLayout;
+	taskTitle->addWidget( new QCheckBox( tr("finish?") ) );
+	taskTitle->addWidget( new QLabel( tr("using") ) );
+	taskTitle->addWidget( new QLabel( tr("needing") ) );
+	taskTitle->addWidget( new QLabel( tr("tag") ) );
+	taskTitle->addWidget( new QLabel( tr("name") ) );
+	taskTitle->addWidget( new QLabel( tr("choose?") ) );
+
+	leftLayout->addStretch( 1 );
+	leftLayout->addLayout( taskTitle );
+
 	QTask taskTmp;
 	taskTmp.name = QString( "AAAA" );
 	GroupTask* tmp = new GroupTask( taskTmp, this );

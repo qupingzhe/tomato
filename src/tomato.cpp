@@ -41,7 +41,7 @@ Task Tomato::getTask( int id )
 
 void Tomato::chooseTask( int id )
 {
-	tasks[id].choosed = true;
+	tasks[id].choosed = !tasks[id].choosed;
 }
 
 void Tomato::finishTask( int id )

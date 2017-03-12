@@ -31,6 +31,9 @@ private:
 	QCheckBox* chooseTaskCheck;
 	TaskWidget* parent;
 	int id;
+	QLabel* usingTime;
+	QLabel* needingTime;
+	QLabel* taskTag;
 	QLabel* taskName;
 };
 
