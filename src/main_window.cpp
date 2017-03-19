@@ -10,6 +10,7 @@
 
 //#include <ctime>
 //#include <cstdio>
+#include <iostream>
 
 TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 {
@@ -42,8 +43,8 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 	connect( taskWidget, SIGNAL(start()),
 			this, SLOT(doStart()) );
 
-	connect( tomato, SIGNAL(getTask(QTask)),
-			taskWidget, SLOT(getTask(QTask)) );
+	connect( tomato, SIGNAL(updateTask(QTask)),
+			taskWidget, SLOT(updateTask(QTask)) );
 	connect( tomato, SIGNAL(finishWork()),
 			this, SLOT(finishWork()) );
 	connect( tomato, SIGNAL(finishRest()),
@@ -52,8 +53,9 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			workingDialog, SLOT(changeTime(int)) );
 	connect( tomato, SIGNAL(changeTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
-
+	//std::wcout << L"OK" << std::endl;
 	tomato->load();
+	//std::wcout << L"OK" << std::endl;
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -63,12 +65,12 @@ TomatoMainWindow::~TomatoMainWindow( void )
 	delete newTaskDialog;
 
 	delete taskWidget;
+	delete tomato;
 
 	delete workingDialog;
 	delete restingDialog;
 
 	delete mainWidget;
-	delete tomato;
 }
 
 void TomatoMainWindow::createMenuBar( void )

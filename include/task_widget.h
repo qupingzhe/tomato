@@ -21,16 +21,23 @@ class GroupTask : public QHBoxLayout
 {
 	Q_OBJECT
 public:
-	GroupTask( QTask qtask, TaskWidget* parent);
+	GroupTask( QTask qtask, int hidingCheck, TaskWidget* parent);
 	~GroupTask( void );
+	void updateTask( QTask qtask );
+	int getID( void );
+	void show( void );
+	void hide( void );
+	void updateDisplay( void );
+	void setHidingState( bool isHidingTask );
 public slots:
 	void chooseTask( int id );
 	void finishTask( int id );
 private:
+	QTask qtask;
+	bool isHidingTask;
 	QCheckBox* finishTaskCheck;
 	QCheckBox* chooseTaskCheck;
 	TaskWidget* parent;
-	int id;
 	QLabel* usingTime;
 	QLabel* needingTime;
 	QLabel* taskTag;
@@ -51,11 +58,11 @@ signals:
 	void chooseTask( int id );
 	void finishTask( int id );
 public slots:
-	void getTask( QTask qtask );
+	void updateTask( QTask qtask );
 private slots:
 	void doStart( void );
+	void hideTask( int state );
 private:
-	std::map<int, QTask> taskList;
 	std::vector<GroupTask*> taskGroup;
 	QSpinBox* workingTime;
 	QSpinBox* restingTime;
@@ -63,6 +70,7 @@ private:
 	QVBoxLayout* leftLayout;
 	QVBoxLayout* midLayout;
 	QHBoxLayout* mainLayout;
+	QCheckBox* showFinish;
 };
 
 #endif

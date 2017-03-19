@@ -15,15 +15,22 @@ QTomato::QTomato( void )
 
 QTomato::~QTomato( void )
 {
+	std::wcout << L"~QTomato" << std::endl;
 	delete tomato;
 	delete timer;
 }
 
 void QTomato::load( void )
 {
-	for( int i=1; i<= Task::ID; ++i ) {
-		emit getTask( QTask(tomato->getTask(i)) );
+	std::wifstream win;
+	win.imbue( std::locale( "zh_CN.UTF-8" ) );
+	win.open( "./task/today.task", std::ios::in );
+	Task tmp;
+	while( win >> tmp ) {
+		//std::wcout << tmp << std::endl;
+		this->addTask( QTask(tmp) );
 	}
+	win.imbue( std::locale( "C" ) );
 }
 
 void QTomato::setTime( int workTime, int restTime )
@@ -38,17 +45,20 @@ void QTomato::setTime( int workTime, int restTime )
 void QTomato::addTask( QTask qtask )
 {
 	int id = tomato->addTask( qtask.toTask() );
-	emit getTask( QTask(tomato->getTask(id)) );
+	emit updateTask( QTask(tomato->getTask(id)) );
 }
 
 void QTomato::chooseTask( int id )
 {
 	tomato->chooseTask( id );
+	emit updateTask( QTask(tomato->getTask(id)) );
 }
 
 void QTomato::finishTask( int id )
 {
+	//std::wcout << L"finish	" << id << std::endl;
 	tomato->finishTask( id );
+	emit updateTask( QTask(tomato->getTask(id)) );
 }
 
 /*
@@ -75,7 +85,7 @@ void QTomato::timeout( void )
 {
 	--remainingTime;
 	if( remainingTime == restTime ) {
-		emit finishWork();
+		doFinishWork();
 	}
 	if( remainingTime == 0 ) {
 		emit finishRest();
@@ -85,4 +95,17 @@ void QTomato::timeout( void )
 	int tmp = remainingTime > restTime ? remainingTime-restTime : remainingTime;
 	emit changeTime( tmp );
 	timer->start( 1000 );
+}
+
+void QTomato::doFinishWork( void )
+{
+	for( int i=1; i<=tomato->taskNumber(); ++i ) {
+		int id = i;
+		//std::wcout << L"errrrrrr" << std::endl;
+		if( tomato->isChoosed( id ) ) {
+			tomato->usingATime( id );
+			emit updateTask( tomato->getTask(id) );
+		}
+	}
+	emit finishWork();
 }

@@ -15,17 +15,17 @@ public:
 	QTomato( void );
 	void setTime( int workTime, int restTime );
 	void load( void );
+	void doFinishWork( void );
 	~QTomato( void );
 signals:
 	void finishWork( void );
 	void finishRest( void );
-	void getTask( QTask qtask );
+	void updateTask( QTask qtask );
 	void changeTime( int remainingTime );
 public slots:
 	void addTask( QTask qtask );
 	void chooseTask( int id );
 	void finishTask( int id );
-	//void getAllTask( void );
 	void start( void );
 private slots:
 	void timeout( void );

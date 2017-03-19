@@ -45,10 +45,7 @@ Task::Task( std::wstring tag, std::wstring name, int needingTime )
 
 Task::Task( BasicTask task )
 {
-	this->id = task.id;
-	this->needingTime = task.needingTime;
-	this->choosed = task.choosed;
-	this->finished = task.finished;
+	init( task.id, task.usingTime, task.needingTime, task.choosed, task.finished );
 }
 
 std::wistream& operator>>( std::wistream& in, Task& task )
