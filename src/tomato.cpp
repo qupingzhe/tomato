@@ -9,13 +9,10 @@ Tomato::Tomato( void )
 
 Tomato::~Tomato( void )
 {
-	std::wcout << L"~Tomato" << std::endl;
 	std::wofstream wout;
 	wout.imbue( std::locale( "zh_CN.UTF-8" ) );
 	wout.open( "./task/today.task", std::ios::out );
 	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
-		//std::wcout << i->second << std::endl;
-		
 		wout << i->second << std::endl;
 	}
 	tasks.clear();
@@ -25,7 +22,6 @@ int Tomato::addTask( Task task )
 {
 	task.id = ++Task::ID;
 	tasks[task.id] = task;
-	std::wcout << task << std::endl;
 	return task.id;
 }
 
@@ -72,7 +68,6 @@ void Tomato::start( int workingTime, int restingTime )
 void Tomato::usingATime( int id )
 {
 	tasks[id].usingTime++;
-	//std::wcout << L"啊啊啊啊啊啊啊啊啊啊" << std::endl;
 }
 
 int Tomato::taskNumber( void )

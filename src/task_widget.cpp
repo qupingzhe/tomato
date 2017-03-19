@@ -11,9 +11,12 @@ GroupTask::GroupTask( QTask qtask, int hidingCheck, TaskWidget* parent )
 {
 	this->qtask = qtask;
 	this->parent = parent;
-	this->isHidingTask = (hidingCheck==Qt::Checked)?true:false;
+	this->isHidingTask = (hidingCheck==Qt::Checked)?false:true;
 
 	finishTaskCheck = new QCheckBox;
+	if( qtask.finished ) {
+		finishTaskCheck->setCheckState( Qt::Checked );
+	}
 	addWidget( finishTaskCheck );
 
 	usingTime = new QLabel( QString::number(qtask.usingTime) );
@@ -54,6 +57,9 @@ void GroupTask::updateTask( QTask qtask )
 {
 	this->qtask = qtask;
 	usingTime->setText( QString::number(qtask.usingTime) );
+	if( qtask.finished ) {
+		finishTaskCheck->setCheckState( Qt::Checked );
+	}
 	
 	//usingTime->show();
 }
@@ -166,7 +172,6 @@ TaskWidget::~TaskWidget( void )
 
 void TaskWidget::finishChildTask( int id )
 {
-	std::wcout << "hhhhhhhhhh" << std::endl;
 	emit finishTask( id );
 }
 
@@ -177,18 +182,14 @@ void TaskWidget::chooseChildTask( int id )
 
 void TaskWidget::updateTask( QTask qtask )
 {
-	std::wcout << L"TaskWidget::updateTask" << std::endl;
 	std::vector<GroupTask*>::iterator ptr = taskGroup.end();
 	for( std::vector<GroupTask*>::iterator i=taskGroup.begin(); i != taskGroup.end(); ++i ) {
-		//std::wcout << L"start" << std::endl;
 		if( (*i)->getID() == qtask.id ) {
 			ptr = i;
 			break;
 		}
-		//std::wcout << L"end" << std::endl;
 	}
 	if( ptr == taskGroup.end() ) {
-		//std::wcout << L"start" << std::endl;
 		GroupTask* gTask = new GroupTask( qtask,showFinish->checkState(), this );
 		taskGroup.push_back( gTask );
 		leftLayout->addLayout( gTask );
@@ -197,7 +198,6 @@ void TaskWidget::updateTask( QTask qtask )
 		(*ptr)->updateTask( qtask );
 		(*ptr)->updateDisplay();
 	}
-	std::wcout << L"end" << std::endl;
 }
 
 void TaskWidget::doStart( void )

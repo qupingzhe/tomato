@@ -15,7 +15,6 @@ QTomato::QTomato( void )
 
 QTomato::~QTomato( void )
 {
-	std::wcout << L"~QTomato" << std::endl;
 	delete tomato;
 	delete timer;
 }

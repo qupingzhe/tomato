@@ -53,9 +53,7 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			workingDialog, SLOT(changeTime(int)) );
 	connect( tomato, SIGNAL(changeTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
-	//std::wcout << L"OK" << std::endl;
 	tomato->load();
-	//std::wcout << L"OK" << std::endl;
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
