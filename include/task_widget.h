@@ -3,47 +3,19 @@
 
 #include "qtask.h"
 
+#include "task_box.h"
+
 #include <QWidget>
-#include <QHBoxLayout>
 #include <vector>
 #include <map>
 
+class QSpinBox;
 class QPushButton;
 class QVBoxLayout;
-class QSpinBox;
+class QHBoxLayout;
 class QCheckBox;
-class QLabel;
 
 class TimeDialog;
-
-class TaskWidget;
-class GroupTask : public QHBoxLayout
-{
-	Q_OBJECT
-public:
-	GroupTask( QTask qtask, int hidingCheck, TaskWidget* parent);
-	~GroupTask( void );
-	void updateTask( QTask qtask );
-	int getID( void );
-	void show( void );
-	void hide( void );
-	void updateDisplay( void );
-	void setHidingState( bool isHidingTask );
-public slots:
-	void chooseTask( int id );
-	void finishTask( int id );
-private:
-	QTask qtask;
-	bool isHidingTask;
-	QCheckBox* finishTaskCheck;
-	QCheckBox* chooseTaskCheck;
-	TaskWidget* parent;
-	QLabel* usingTime;
-	QLabel* needingTime;
-	QLabel* taskTag;
-	QLabel* taskName;
-};
-
 
 class TaskWidget : public QWidget
 {
@@ -51,19 +23,20 @@ class TaskWidget : public QWidget
 public:
 	TaskWidget( void );
 	~TaskWidget( void );
-	void finishChildTask( int id );
-	void chooseChildTask( int id );
+	void finishChildTask( int id, bool flag );
+	void chooseChildTask( int id, bool flag );
 signals:
 	void start( void );
 	void chooseTask( int id );
 	void finishTask( int id );
 public slots:
+	void updateTask( std::vector<QTask> &qtasks );
 	void updateTask( QTask qtask );
 private slots:
 	void doStart( void );
 	void hideTask( int state );
 private:
-	std::vector<GroupTask*> taskGroup;
+	std::vector<TaskBox*> taskGroup;
 	QSpinBox* workingTime;
 	QSpinBox* restingTime;
 	QPushButton* startButton;

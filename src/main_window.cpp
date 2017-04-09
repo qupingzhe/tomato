@@ -4,6 +4,7 @@
 #include "new_task_dialog.h"
 #include "task_widget.h"
 #include "time_dialog.h"
+#include "timer.h"
 
 #include <QTabWidget>
 #include <QMenuBar>
@@ -15,7 +16,8 @@
 TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 {
 	tomato = new QTomato;
-	tomato->setTime( 3, 3 );
+	timer = new TomatoTimer;
+	//tomato->setTime( 3, 3 );
 	mainWidget = new QTabWidget;
 	taskWidget = new TaskWidget;
 
@@ -40,20 +42,30 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			tomato, SLOT(chooseTask(int)) );
 	connect( taskWidget, SIGNAL(finishTask(int)),
 			tomato, SLOT(finishTask(int)) );
-	connect( taskWidget, SIGNAL(start()),
-			this, SLOT(doStart()) );
 
 	connect( tomato, SIGNAL(updateTask(QTask)),
 			taskWidget, SLOT(updateTask(QTask)) );
-	connect( tomato, SIGNAL(finishWork()),
+	connect( tomato, SIGNAL(updateTask(std::vector<QTask>&)),
+			taskWidget, SLOT(updateTask(std::vector<QTask>&)) );
+
+	connect( taskWidget, SIGNAL(start()),
+			this, SLOT(start()) );
+
+	connect( timer, SIGNAL(finishWork()),
 			this, SLOT(finishWork()) );
-	connect( tomato, SIGNAL(finishRest()),
+	connect( timer, SIGNAL(finishRest()),
 			this, SLOT(finishRest()) );
-	connect( tomato, SIGNAL(changeTime(int)),
+	connect( timer, SIGNAL(displayTime(int)),
 			workingDialog, SLOT(changeTime(int)) );
-	connect( tomato, SIGNAL(changeTime(int)),
+	connect( timer, SIGNAL(displayTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
+	load();
+}
+
+void TomatoMainWindow::load( void )
+{
 	tomato->load();
+	timer->setTime( 3, 3 );
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -81,22 +93,9 @@ void TomatoMainWindow::createMenuBar( void )
 			newTaskDialog, SLOT(show()) );
 }
 
-/*
-void TomatoMainWindow::doStart( void )
-{
-	timespec time;
-	clock_gettime(CLOCK_REALTIME, &time);
-	tm nowTime;
-	localtime_r(&time.tv_sec, &nowTime);
-	FILE* file = fopen("./date/date","a");
-	fprintf(file, "%04d %02d %02d ", nowTime.tm_year + 1900, nowTime.tm_mon, nowTime.tm_mday );
-	fprintf(file,"%02d:%02d:%02d\n", nowTime.tm_hour, nowTime.tm_min, nowTime.tm_sec);
-	fclose(file);
-}
-*/
-
 void TomatoMainWindow::finishRest( void )
 {
+	tomato->end();
 	restingDialog->hide();
 }
 
@@ -109,8 +108,9 @@ void TomatoMainWindow::finishWork( void )
 	//restingDialog->exec();
 }
 
-void TomatoMainWindow::doStart( void )
+void TomatoMainWindow::start( void )
 {
-	tomato->start();
+	tomato->start( 3, 3 );
+	timer->start();
 	workingDialog->show();
 }

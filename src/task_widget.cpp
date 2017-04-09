@@ -1,114 +1,12 @@
 #include "task_widget.h"
+#include "task_box.h"
 #include "time_dialog.h"
 
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QSpinBox>
-#include <QLabel>
 #include <QCheckBox>
-
-GroupTask::GroupTask( QTask qtask, int hidingCheck, TaskWidget* parent )
-{
-	this->qtask = qtask;
-	this->parent = parent;
-	this->isHidingTask = (hidingCheck==Qt::Checked)?false:true;
-
-	finishTaskCheck = new QCheckBox;
-	if( qtask.finished ) {
-		finishTaskCheck->setCheckState( Qt::Checked );
-	}
-	addWidget( finishTaskCheck );
-
-	usingTime = new QLabel( QString::number(qtask.usingTime) );
-	addWidget( usingTime );
-	
-	needingTime = new QLabel( QString::number(qtask.needingTime) );
-	addWidget( needingTime );
-
-	taskTag = new QLabel( qtask.tag );
-	addWidget( taskTag );
-
-	taskName = new QLabel( qtask.name );
-	addWidget( taskName );
-
-	chooseTaskCheck = new QCheckBox;
-	addWidget( chooseTaskCheck );
-
-	connect( finishTaskCheck, SIGNAL(stateChanged(int)),
-			this, SLOT(finishTask(int)) );
-	connect( chooseTaskCheck, SIGNAL(stateChanged(int)),
-			this, SLOT(chooseTask(int)) );
-	updateDisplay();
-}
-
-GroupTask::~GroupTask( void )
-{
-	delete taskName;
-	delete finishTaskCheck;
-	delete chooseTaskCheck;
-}
-
-int GroupTask::getID( void )
-{
-	return qtask.id;
-}
-
-void GroupTask::updateTask( QTask qtask )
-{
-	this->qtask = qtask;
-	usingTime->setText( QString::number(qtask.usingTime) );
-	if( qtask.finished ) {
-		finishTaskCheck->setCheckState( Qt::Checked );
-	}
-	
-	//usingTime->show();
-}
-
-void GroupTask::finishTask( int state )
-{
-	parent->finishChildTask( qtask.id );
-}
-
-void GroupTask::chooseTask( int state )
-{
-	parent->chooseChildTask( qtask.id );
-}
-
-void GroupTask::setHidingState( bool isHidingTask )
-{
-	this->isHidingTask = isHidingTask;
-	updateDisplay();
-}
-
-void GroupTask::updateDisplay( void )
-{
-	if( qtask.finished && isHidingTask ) {
-		hide();
-	}
-	else {
-		show();
-	}
-}
-
-void GroupTask::hide( void )
-{
-	finishTaskCheck->hide();
-	chooseTaskCheck->hide();
-	usingTime->hide();
-	needingTime->hide();
-	taskTag->hide();
-	taskName->hide();
-}
-
-void GroupTask::show( void )
-{
-	finishTaskCheck->show();
-	chooseTaskCheck->show();
-	usingTime->show();
-	needingTime->show();
-	taskTag->show();
-	taskName->show();
-}
+#include <QLabel>
 
 TaskWidget::TaskWidget( void )
 {
@@ -122,7 +20,6 @@ TaskWidget::TaskWidget( void )
 			this, SLOT(doStart()) );
 
 	showFinish = new QCheckBox( tr("finish?") );
-	//connect( showFinish, SIGNAL(tr
 
 	midLayout = new QVBoxLayout;
 	midLayout->addStretch( 0 );
@@ -164,39 +61,46 @@ TaskWidget::~TaskWidget( void )
 	delete startButton;
 	delete restingTime;
 	delete workingTime;
-	for( std::vector<GroupTask*>::iterator i = taskGroup.begin(); i != taskGroup.end(); ++i ) {
+	for( std::vector<TaskBox*>::iterator i = taskGroup.begin(); i != taskGroup.end(); ++i ) {
 		//delete *i;
 	}
 	taskGroup.clear();
 }
 
-void TaskWidget::finishChildTask( int id )
+void TaskWidget::finishChildTask( int id, bool flag )
 {
 	emit finishTask( id );
 }
 
-void TaskWidget::chooseChildTask( int id )
+void TaskWidget::chooseChildTask( int id, bool flag )
 {
 	emit chooseTask( id );
 }
 
 void TaskWidget::updateTask( QTask qtask )
 {
-	std::vector<GroupTask*>::iterator ptr = taskGroup.end();
-	for( std::vector<GroupTask*>::iterator i=taskGroup.begin(); i != taskGroup.end(); ++i ) {
-		if( (*i)->getID() == qtask.id ) {
-			ptr = i;
+	size_t ptr = 0;
+	size_t taskNumber = taskGroup.size();
+	for( ; ptr < taskNumber; ++ptr ) {
+		if( taskGroup[ptr]->getID() == qtask.id ) {
 			break;
 		}
 	}
-	if( ptr == taskGroup.end() ) {
-		GroupTask* gTask = new GroupTask( qtask,showFinish->checkState(), this );
-		taskGroup.push_back( gTask );
-		leftLayout->addLayout( gTask );
+	if( ptr == taskNumber ) {
+		TaskBox* tmp = new TaskBox( qtask, showFinish->checkState(), this );
+		taskGroup.push_back( tmp );
+		leftLayout->addLayout( tmp );
 	}
 	else {
-		(*ptr)->updateTask( qtask );
-		(*ptr)->updateDisplay();
+		taskGroup[ptr]->updateTask( qtask );
+		taskGroup[ptr]->updateDisplay();
+	}
+}
+
+void TaskWidget::updateTask( std::vector<QTask> &qtasks )
+{
+	for( std::vector<QTask>::iterator i=qtasks.begin(); i != qtasks.end(); ++i ) {
+		this->updateTask( *i );
 	}
 }
 
@@ -208,7 +112,7 @@ void TaskWidget::doStart( void )
 void TaskWidget::hideTask( int state )
 {
 	bool isHidingTask = state==Qt::Checked?false:true;
-	for( int i=0; i<taskGroup.size(); ++i ) {
-		taskGroup[i]->setHidingState( isHidingTask );
+	for( std::vector<TaskBox*>::iterator i=taskGroup.begin(); i != taskGroup.end(); ++i ) {
+		(*i)->setHidingState( isHidingTask );
 	}
 }

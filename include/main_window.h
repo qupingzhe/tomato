@@ -7,6 +7,7 @@ class QTomato;
 class TaskWidget;
 class NewTaskDialog;
 class TimeDialog;
+class TomatoTimer;
 
 class QTabWidget;
 class QMenu;
@@ -17,10 +18,11 @@ class TomatoMainWindow : public QMainWindow
 	Q_OBJECT
 public:
 	TomatoMainWindow( QWidget* parent = NULL );
+	void load( void );
 	void createMenuBar( void );
 	~TomatoMainWindow( void );
 private slots:
-	void doStart( void );
+	void start( void );
 	void finishRest( void );
 	void finishWork( void );
 private:
@@ -34,6 +36,7 @@ private:
 
 	QMenu* fileMenu;
 	QAction* addTask;
+	TomatoTimer* timer;
 };
 
 #endif

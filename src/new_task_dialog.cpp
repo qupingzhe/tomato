@@ -31,7 +31,7 @@ NewTaskDialog::NewTaskDialog( QWidget* parent ) : QDialog( parent )
 	connect( addButton, SIGNAL(clicked()),
 			this, SLOT(add()) );
 	connect( cancelButton, SIGNAL(clicked()),
-			this, SLOT(cancel()) );
+			this, SLOT(hide()) );
 }
 
 NewTaskDialog::~NewTaskDialog( void )
@@ -57,10 +57,6 @@ void NewTaskDialog::add( void )
 	qtask.name = taskName->displayText();
 	qtask.needingTime = needingTime->value();
 	emit addTask( qtask );
-	cancel();
+	hide();
 }
 
-void NewTaskDialog::cancel( void )
-{
-	this->hide();
-}

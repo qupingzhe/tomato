@@ -18,6 +18,19 @@ Tomato::~Tomato( void )
 	tasks.clear();
 }
 
+void Tomato::load( void )
+{
+	std::wifstream win;
+	win.imbue( std::locale( "zh_CN.UTF-8" ) );
+	win.open( "./task/today.task", std::ios::in );
+	Task tmp;
+	while( win >> tmp ) {
+		//std::wcout << tmp << std::endl;
+		this->addTask( tmp );
+	}
+	win.imbue( std::locale( "C" ) );
+}
+
 int Tomato::addTask( Task task )
 {
 	task.id = ++Task::ID;
@@ -28,6 +41,14 @@ int Tomato::addTask( Task task )
 Task Tomato::getTask( int id )
 {
 	return tasks[id];
+}
+
+void Tomato::getAllTask( std::vector<int> &tasksID )
+{
+	for( std::map<int, Task>::iterator i = this->tasks.begin();
+			i != this->tasks.end(); ++i ) {
+		tasksID.push_back( (i->second).id );
+	}
 }
 
 void Tomato::chooseTask( int id )
@@ -65,17 +86,18 @@ void Tomato::start( int workingTime, int restingTime )
 	}
 }
 
-void Tomato::usingATime( int id )
+void Tomato::end( void )
 {
-	tasks[id].usingTime++;
+	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
+		if( (i->second).choosed && !(i->second).finished ) {
+			(i->second).usingTime++;
+		}
+		(i->second).choosed = false;
+	}
 }
-
-int Tomato::taskNumber( void )
-{
-	return tasks.size();
-}
-
+	
 bool Tomato::isChoosed( int id )
 {
 	return tasks[id].choosed;
 }
+

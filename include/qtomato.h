@@ -13,29 +13,22 @@ class QTomato : public QObject
 	Q_OBJECT
 public:
 	QTomato( void );
-	void setTime( int workTime, int restTime );
-	void load( void );
-	void doFinishWork( void );
 	~QTomato( void );
+	void load( void );
+	void flush( void );
 signals:
-	void finishWork( void );
-	void finishRest( void );
-	void updateTask( QTask qtask );
-	void changeTime( int remainingTime );
+	void updateTask( std::vector<QTask> &qtasks );
+	void updateTask( QTask qtasks );
 public slots:
 	void addTask( QTask qtask );
 	void chooseTask( int id );
 	void finishTask( int id );
-	void start( void );
-private slots:
-	void timeout( void );
+	void start( int workingTime, int restingTime );
+	void end( void );
 private:
-	int workTime;
-	int restTime;
-	int totalTime;
-	int remainingTime;
 	Tomato* tomato;
-	QTimer* timer;
+	std::vector<int> tasksID;
+	std::vector<QTask> tasks;
 };
 
 #endif

@@ -20,7 +20,6 @@ signals:
 	void addTask( QTask qtask );
 private slots:
 	void add( void );
-	void cancel( void );
 private:
 	QLabel* tagLabel;
 	QLineEdit* tag;
