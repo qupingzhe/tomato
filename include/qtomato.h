@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QString>
-#include "tomato.h"
 #include "qtask.h"
+
+#include "tomato.h"
 
 class QTimer;
 
@@ -18,7 +19,7 @@ public:
 	void flush( void );
 signals:
 	void updateTask( std::vector<QTask> &qtasks );
-	void updateTask( QTask qtasks );
+	void updateTask( QTask qtask );
 public slots:
 	void addTask( QTask qtask );
 	void chooseTask( int id );

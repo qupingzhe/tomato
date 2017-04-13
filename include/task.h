@@ -2,8 +2,6 @@
 #define TASK_H
 
 #include <string>
-#include <fstream>
-#include <iostream>
 
 class BasicTask
 {
@@ -22,7 +20,6 @@ public:
 	bool finished;
 	int flag;
 };
-
 
 class Task : public BasicTask
 {

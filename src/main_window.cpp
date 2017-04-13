@@ -65,7 +65,7 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 void TomatoMainWindow::load( void )
 {
 	tomato->load();
-	timer->setTime( 3, 3 );
+	timer->setTime( 25, 5 );
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -110,7 +110,7 @@ void TomatoMainWindow::finishWork( void )
 
 void TomatoMainWindow::start( void )
 {
-	tomato->start( 3, 3 );
+	tomato->start( 25, 5 );
 	timer->start();
 	workingDialog->show();
 }

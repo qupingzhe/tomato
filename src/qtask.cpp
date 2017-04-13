@@ -11,11 +11,6 @@ QTask::QTask( Task task ) : BasicTask( task )
 	name = QString::fromStdWString(task.name);
 }
 
-QTask::~QTask( void )
-{
-	;
-}
-
 Task QTask::toTask( void )
 {
 	Task task(*this);

@@ -25,10 +25,10 @@ void TomatoTimer::start( void )
 
 void TomatoTimer::setTime( int workTime, int restTime )
 {
-	//this->workTime = workTime*60;
-	//this->restTime = restTime*60;
-	this->workTime = workTime;
-	this->restTime = restTime;
+	this->workTime = workTime*60;
+	this->restTime = restTime*60;
+	//this->workTime = workTime;
+	//this->restTime = restTime;
 	this->remainingTime = this->workTime + this->restTime;
 	emit displayTime( this->workTime );
 }

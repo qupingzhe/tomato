@@ -8,7 +8,6 @@ class QTask : public BasicTask
 public:
 	QTask( void );
 	QTask( Task task );
-	~QTask( void );
 	Task toTask( void );
 
 	QString tag;

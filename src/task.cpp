@@ -1,4 +1,5 @@
 #include "task.h"
+#include <fstream>
 
 int BasicTask::ID = 0;
 

@@ -1,5 +1,7 @@
 #include "tomato.h"
 
+#include <iostream>
+#include <fstream>
 #include <ctime>
 #include <iomanip>
 
@@ -11,7 +13,7 @@ Tomato::~Tomato( void )
 {
 	std::wofstream wout;
 	wout.imbue( std::locale( "zh_CN.UTF-8" ) );
-	wout.open( "./task/today.task", std::ios::out );
+	wout.open( "./task/task", std::ios::out );
 	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
 		wout << i->second << std::endl;
 	}
@@ -22,7 +24,7 @@ void Tomato::load( void )
 {
 	std::wifstream win;
 	win.imbue( std::locale( "zh_CN.UTF-8" ) );
-	win.open( "./task/today.task", std::ios::in );
+	win.open( "./task/task", std::ios::in );
 	Task tmp;
 	while( win >> tmp ) {
 		//std::wcout << tmp << std::endl;
@@ -64,7 +66,7 @@ void Tomato::finishTask( int id )
 void Tomato::start( int workingTime, int restingTime )
 {
 	std::wofstream wout;
-	wout.open( "./date/today.data.bak", std::ios::app );
+	wout.open( "./data/data", std::ios::app );
 	for( std::map<int,Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
 		if( (i->second).choosed ) {
 			timespec timeS;
@@ -72,9 +74,12 @@ void Tomato::start( int workingTime, int restingTime )
 			tm now;
 			localtime_r(&timeS.tv_sec, &now);
 
-			wout <<  std::setw(4) << now.tm_year + 1900 << " " << std::setw(2) << now.tm_mon+1 << " ";
-			wout << std::setw(2) << now.tm_mday << " " <<  std::setw(2) << now.tm_hour << " ";
-			wout << now.tm_min << " " << now.tm_sec << " ";
+			wout << std::setfill( L'0' ) << std::setw(4) << now.tm_year + 1900 << " ";
+			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_mon+1 << " ";
+			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_mday << " ";
+			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_hour << ":";
+			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_min << ":";
+			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_sec << " ";
 			wout << (i->second).flag << " ";
 
 			wout.imbue( std::locale( "zh_CN.UTF-8" ) );
