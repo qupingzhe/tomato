@@ -2,7 +2,7 @@ tmp/*
 *.o
 moc*
 task/*
-date/*
+data/*
 tomato
 tomato.bak
 Makefile
