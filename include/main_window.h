@@ -25,6 +25,8 @@ private slots:
 	void start( void );
 	void finishRest( void );
 	void finishWork( void );
+	void changeWorkTime( int minutes );
+	void changeRestTime( int minutes );
 private:
 	QTomato* tomato;
 	QTabWidget* mainWidget;
@@ -37,6 +39,8 @@ private:
 	QMenu* fileMenu;
 	QAction* addTask;
 	TomatoTimer* timer;
+	int restTime;
+	int workTime;
 };
 
 #endif

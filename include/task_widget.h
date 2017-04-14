@@ -22,6 +22,7 @@ class TaskWidget : public QWidget
 	Q_OBJECT
 public:
 	TaskWidget( void );
+	void load( void );
 	~TaskWidget( void );
 	void finishChildTask( int id, bool flag );
 	void chooseChildTask( int id, bool flag );
@@ -29,16 +30,20 @@ signals:
 	void start( void );
 	void chooseTask( int id );
 	void finishTask( int id );
+	void workTimeChanged( int minutes );
+	void restTimeChanged( int minutes );
 public slots:
 	void updateTask( std::vector<QTask> &qtasks );
 	void updateTask( QTask qtask );
 private slots:
 	void doStart( void );
 	void hideTask( int state );
+	void workTime( int minutes );
+	void restTime( int minutes );
 private:
 	std::vector<TaskBox*> taskGroup;
-	QSpinBox* workingTime;
-	QSpinBox* restingTime;
+	QSpinBox* workTimeBox;
+	QSpinBox* restTimeBox;
 	QPushButton* startButton;
 	QVBoxLayout* leftLayout;
 	QVBoxLayout* midLayout;

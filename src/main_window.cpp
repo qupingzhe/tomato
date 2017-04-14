@@ -9,15 +9,13 @@
 #include <QTabWidget>
 #include <QMenuBar>
 
-//#include <ctime>
-//#include <cstdio>
 #include <iostream>
 
 TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 {
 	tomato = new QTomato;
 	timer = new TomatoTimer;
-	//tomato->setTime( 3, 3 );
+
 	mainWidget = new QTabWidget;
 	taskWidget = new TaskWidget;
 
@@ -59,13 +57,21 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			workingDialog, SLOT(changeTime(int)) );
 	connect( timer, SIGNAL(displayTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
+
+	connect( taskWidget, SIGNAL(workTimeChanged(int)),
+			this, SLOT(changeWorkTime(int)) );
+	connect( taskWidget, SIGNAL(restTimeChanged(int)),
+			this, SLOT(changeRestTime(int)) );
+	workingDialog->setModal( true );
+	restingDialog->setModal( true );
 	load();
 }
 
 void TomatoMainWindow::load( void )
 {
 	tomato->load();
-	timer->setTime( 25, 5 );
+	taskWidget->load();
+	timer->setTime( workTime, restTime );
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -101,16 +107,26 @@ void TomatoMainWindow::finishRest( void )
 
 void TomatoMainWindow::finishWork( void )
 {
-	restingDialog->showFullScreen();
 	workingDialog->hide();
-	restingDialog->show();
-
-	//restingDialog->exec();
+	restingDialog->showFullScreen();
 }
 
 void TomatoMainWindow::start( void )
 {
-	tomato->start( 25, 5 );
+	tomato->start( workTime, restTime );
 	timer->start();
 	workingDialog->show();
 }
+
+void TomatoMainWindow::changeRestTime( int minutes )
+{
+	this->restTime = minutes;
+	timer->setTime( workTime, restTime );
+}
+
+void TomatoMainWindow::changeWorkTime( int minutes )
+{
+	this->workTime = minutes;
+	timer->setTime( workTime, restTime );
+}
+

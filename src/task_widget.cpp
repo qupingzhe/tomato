@@ -10,21 +10,23 @@
 
 TaskWidget::TaskWidget( void )
 {
-	workingTime = new QSpinBox;
-	workingTime->setValue( 25 );
-	restingTime = new QSpinBox;
-	restingTime->setValue( 5 );
+	workTimeBox = new QSpinBox;
+	restTimeBox = new QSpinBox;
 	
 	startButton = new QPushButton( tr("start") );
 	connect( startButton, SIGNAL(clicked()),
 			this, SLOT(doStart()) );
+	connect( workTimeBox, SIGNAL(valueChanged(int)),
+			this, SLOT(workTime(int)) );
+	connect( restTimeBox, SIGNAL(valueChanged(int)),
+			this, SLOT(restTime(int)) );
 
 	showFinish = new QCheckBox( tr("finish?") );
 
 	midLayout = new QVBoxLayout;
 	midLayout->addStretch( 0 );
-	midLayout->addWidget( workingTime );
-	midLayout->addWidget( restingTime );
+	midLayout->addWidget( workTimeBox );
+	midLayout->addWidget( restTimeBox );
 	midLayout->addWidget( startButton );
 	midLayout->addStretch( 0 );
 
@@ -42,7 +44,6 @@ TaskWidget::TaskWidget( void )
 			this, SLOT(hideTask(int)) );
 	showFinish->setCheckState( Qt::Unchecked );
 
-
 	leftLayout->addStretch( 1 );
 	leftLayout->addLayout( taskTitle );
 
@@ -59,12 +60,18 @@ TaskWidget::~TaskWidget( void )
 	delete mainLayout;
 
 	delete startButton;
-	delete restingTime;
-	delete workingTime;
+	delete restTimeBox;
+	delete workTimeBox;
 	for( std::vector<TaskBox*>::iterator i = taskGroup.begin(); i != taskGroup.end(); ++i ) {
 		//delete *i;
 	}
 	taskGroup.clear();
+}
+
+void TaskWidget::load( void )
+{
+	workTimeBox->setValue( 25 );
+	restTimeBox->setValue( 5 );
 }
 
 void TaskWidget::finishChildTask( int id, bool flag )
@@ -115,4 +122,14 @@ void TaskWidget::hideTask( int state )
 	for( std::vector<TaskBox*>::iterator i=taskGroup.begin(); i != taskGroup.end(); ++i ) {
 		(*i)->setHidingState( isHidingTask );
 	}
+}
+
+void TaskWidget::workTime( int minutes )
+{
+	emit workTimeChanged( minutes );
+}
+
+void TaskWidget::restTime( int minutes )
+{
+	emit restTimeChanged( minutes );
 }
