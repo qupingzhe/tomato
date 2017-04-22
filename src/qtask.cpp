@@ -20,3 +20,16 @@ Task QTask::toTask( void )
 
 	return task;
 }
+
+QTaskData::QTaskData( TaskData taskData ) : BasicTaskData( taskData )
+{
+	tag = QString::fromStdWString( taskData.tag );
+}
+
+TaskData QTaskData::toTaskData( void )
+{
+	TaskData taskData(*this);
+	taskData.tag = tag.toStdWString();
+	
+	return taskData;
+}

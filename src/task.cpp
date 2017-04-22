@@ -86,3 +86,15 @@ std::wostream& operator<<( std::wostream& out, const Task& task )
 	out << task.tag << " " << task.name << " " << task.flag;
 	return out;
 }
+
+BasicTaskData::BasicTaskData( const BasicTaskData& taskData )
+{
+	this->dayOffset = taskData.dayOffset;
+	this->startMinute = taskData.startMinute;
+	this->endMinute = taskData.endMinute;
+}
+
+TaskData::TaskData( BasicTaskData taskData ) : BasicTaskData(taskData)
+{
+}
+

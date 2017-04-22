@@ -34,4 +34,22 @@ public:
 	std::wstring name;
 };
 
+class BasicTaskData
+{
+public:
+	BasicTaskData( void ){};
+	BasicTaskData( const BasicTaskData& taskData );
+	int dayOffset;
+	int startMinute;
+	int endMinute;
+};
+
+class TaskData : public BasicTaskData
+{
+public:
+	TaskData( void ){}
+	TaskData( BasicTaskData task );
+	std::wstring tag;
+};
+
 #endif

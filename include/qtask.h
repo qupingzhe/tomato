@@ -14,4 +14,12 @@ public:
 	QString name;
 };
 
+class QTaskData : public BasicTaskData
+{
+public:
+	QTaskData( TaskData taskData );
+	TaskData toTaskData( void );
+	QString tag;
+};
+
 #endif

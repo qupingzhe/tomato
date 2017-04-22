@@ -5,6 +5,7 @@
 
 class QTomato;
 class TaskWidget;
+class TaskDataWidget;
 class NewTaskDialog;
 class TimeDialog;
 class TomatoTimer;
@@ -31,6 +32,7 @@ private:
 	QTomato* tomato;
 	QTabWidget* mainWidget;
 	TaskWidget* taskWidget;
+	TaskDataWidget* taskDataWidget;
 	TimeDialog* workingDialog;
 	TimeDialog* restingDialog;
 

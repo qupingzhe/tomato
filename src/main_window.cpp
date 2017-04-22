@@ -3,6 +3,7 @@
 #include "qtomato.h"
 #include "new_task_dialog.h"
 #include "task_widget.h"
+#include "task_data_widget.h"
 #include "time_dialog.h"
 #include "timer.h"
 
@@ -18,6 +19,7 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 
 	mainWidget = new QTabWidget;
 	taskWidget = new TaskWidget;
+	taskDataWidget = new TaskDataWidget;
 
 	newTaskDialog = new NewTaskDialog;
 
@@ -32,6 +34,7 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 	createMenuBar();
 
 	mainWidget->addTab( taskWidget, tr("main page") );
+	mainWidget->addTab( taskDataWidget, tr("task data") );
 	setCentralWidget( mainWidget );
 
 	connect( newTaskDialog, SIGNAL(addTask(QTask)),
@@ -48,6 +51,8 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 
 	connect( taskWidget, SIGNAL(start()),
 			this, SLOT(start()) );
+	connect( taskDataWidget, SIGNAL(getTaskData(std::vector<QTaskData>&)),
+			tomato, SLOT(getTaskData(std::vector<QTaskData>&)) );
 
 	connect( timer, SIGNAL(finishWork()),
 			this, SLOT(finishWork()) );
@@ -72,6 +77,8 @@ void TomatoMainWindow::load( void )
 	tomato->load();
 	taskWidget->load();
 	timer->setTime( workTime, restTime );
+	newTaskDialog->load();
+	taskDataWidget->load();
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )

@@ -60,3 +60,11 @@ void QTomato::finishTask( int id )
 	emit updateTask( QTask(tomato->getTask(id)) );
 }
 
+void QTomato::getTaskData( std::vector<QTaskData>& qtaskDatas )
+{
+	tomato->getTaskData( taskDatas );
+	for( int i=0; i<taskDatas.size(); ++i ) {
+		qtaskDatas.push_back( QTaskData(taskDatas[i]) );
+	}
+}
+

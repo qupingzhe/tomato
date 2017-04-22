@@ -26,10 +26,12 @@ public slots:
 	void finishTask( int id );
 	void start( int workingTime, int restingTime );
 	void end( void );
+	void getTaskData( std::vector<QTaskData>& qtaskDatas );
 private:
 	Tomato* tomato;
 	std::vector<int> tasksID;
 	std::vector<QTask> tasks;
+	std::vector<TaskData> taskDatas;
 };
 
 #endif

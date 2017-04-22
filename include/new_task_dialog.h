@@ -9,6 +9,7 @@ class QLineEdit;
 class QSpinBox;
 class QFormLayout;
 class QPushButton;
+class QComboBox;
 
 class NewTaskDialog : public QDialog
 {
@@ -16,13 +17,14 @@ class NewTaskDialog : public QDialog
 public:
 	NewTaskDialog( QWidget* parent = NULL );
 	~NewTaskDialog( void );
+	void load( void );
 signals:
 	void addTask( QTask qtask );
 private slots:
 	void add( void );
 private:
 	QLabel* tagLabel;
-	QLineEdit* tag;
+	QComboBox* tag;
 
 	QLabel* taskNameLabel;
 	QLineEdit* taskName;
