@@ -40,6 +40,9 @@ private:
 
 	QMenu* fileMenu;
 	QAction* addTask;
+	QMenu* dataMenu;
+	QAction* showData;
+
 	TomatoTimer* timer;
 	int restTime;
 	int workTime;

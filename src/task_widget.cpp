@@ -133,3 +133,4 @@ void TaskWidget::restTime( int minutes )
 {
 	emit restTimeChanged( minutes );
 }
+

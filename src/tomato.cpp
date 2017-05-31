@@ -7,6 +7,9 @@
 
 static int DAYS[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
+static const char TASK_PATH[] = "task/task";
+static const char DATA_PATH[] = "data/data";
+
 Tomato::Tomato( void )
 {
 }
@@ -15,7 +18,7 @@ Tomato::~Tomato( void )
 {
 	std::wofstream wout;
 	wout.imbue( std::locale( "zh_CN.UTF-8" ) );
-	wout.open( "./task/task", std::ios::out );
+	wout.open( TASK_PATH, std::ios::out );
 	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
 		wout << i->second << std::endl;
 	}
@@ -27,7 +30,7 @@ void Tomato::load( void )
 {
 	std::wifstream win;
 	win.imbue( std::locale( "zh_CN.UTF-8" ) );
-	win.open( "./task/task", std::ios::in );
+	win.open( TASK_PATH, std::ios::in );
 	Task tmp;
 	while( win >> tmp ) {
 		//std::wcout << tmp << std::endl;
@@ -70,8 +73,8 @@ void Tomato::finishTask( int id )
 void Tomato::start( int workingTime, int restingTime )
 {
 	std::wofstream wout;
-	//wout.open( "./data/data", std::ios::app );
-	wout.open( "./data/data.bak", std::ios::app );
+	wout.open( DATA_PATH, std::ios::app );
+
 	for( std::map<int,Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
 		if( (i->second).choosed ) {
 			timespec timeS;
@@ -134,7 +137,7 @@ void Tomato::getTaskData( std::vector<TaskData>& taskDatas, int dayOffset )
 	std::wstring tag, name;
 	TaskData result;
 	std::wifstream win;
-	win.open( "./data/data.bak", std::ios::in );
+	win.open( DATA_PATH, std::ios::in );
 	while( win >> old.tm_year >> old.tm_mon >> old.tm_mday ) {
 		win >> old.tm_hour >> old.tm_min >> old.tm_sec;
 		win >> flag;
@@ -171,14 +174,20 @@ bool Tomato::isIncludeDays( tm* old, tm* now, int dayOffset, TaskData* result )
 			DAYS[2] = 28;
 		}
 		old->tm_mday++;
-		ans = old->tm_mday/DAYS[old->tm_mon];
-		old->tm_mday %= DAYS[old->tm_mon];
+		ans = old->tm_mday/(DAYS[old->tm_mon]+1);
+		old->tm_mday %= (DAYS[old->tm_mon]+1);
+		if( ans == 1 ) {
+			old->tm_mday++;
+		}
 		old->tm_mon += ans;
-		ans = old->tm_mon/12;
-		old->tm_mon %= 12;
+		ans = old->tm_mon/13;
+		old->tm_mon %= 13;
+		if( ans == 1 ) {
+			old->tm_mon++;
+		}
 		old->tm_year += ans;
 	}
 	//std::wcout << L"start------------------------" << std::endl;
-	//std::wcout << old->tm_mon << " " << old->tm_mday << "	|	" << now->tm_mon << " " << now->tm_mday << std
+	//std::wcout << old->tm_mon << " " << old->tm_mday << "	|	" << now->tm_mon << " " << now->tm_mday << std::endl;
 	return false;
 }

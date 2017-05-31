@@ -19,9 +19,9 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 
 	mainWidget = new QTabWidget;
 	taskWidget = new TaskWidget;
-	taskDataWidget = new TaskDataWidget;
 
 	newTaskDialog = new NewTaskDialog;
+	taskDataWidget = new TaskDataWidget;
 
 	workingDialog = new TimeDialog;
 	workingDialog->setWindowTitle( "working" );
@@ -33,8 +33,10 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 
 	createMenuBar();
 
+	taskDataWidget->hide();
+
 	mainWidget->addTab( taskWidget, tr("main page") );
-	mainWidget->addTab( taskDataWidget, tr("task data") );
+	//mainWidget->addTab( taskDataWidget, tr("task data") );
 	setCentralWidget( mainWidget );
 
 	connect( newTaskDialog, SIGNAL(addTask(QTask)),
@@ -86,6 +88,9 @@ TomatoMainWindow::~TomatoMainWindow( void )
 	delete addTask;
 	delete fileMenu;
 	delete newTaskDialog;
+	delete showData;
+	delete dataMenu;
+	delete taskDataWidget;
 
 	delete taskWidget;
 	delete tomato;
@@ -104,6 +109,12 @@ void TomatoMainWindow::createMenuBar( void )
 	menuBar()->addMenu( fileMenu );
 	connect( addTask, SIGNAL(triggered()),
 			newTaskDialog, SLOT(show()) );
+	dataMenu = new QMenu( tr("data") );
+	showData = new QAction( tr("show data"), this );
+	dataMenu->addAction(showData);
+	menuBar()->addMenu(dataMenu);
+	connect( showData, SIGNAL(triggered()),
+			taskDataWidget, SLOT(show()) );
 }
 
 void TomatoMainWindow::finishRest( void )

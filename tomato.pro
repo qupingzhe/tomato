@@ -18,7 +18,9 @@ HEADERS += include/main_window.h \
            include/tomato.h \
 		   include/timer.h \
 		   include/task_box.h \
-		   include/task_data_widget.h
+		   include/task_data_widget.h \
+		   include/task_data_box.h
+
 SOURCES += src/main.cpp \
            src/main_window.cpp \
            src/new_task_dialog.cpp \
@@ -30,7 +32,8 @@ SOURCES += src/main.cpp \
            src/tomato.cpp \
 		   src/timer.cpp \
 		   src/task_box.cpp \
-		   src/task_data_widget.cpp
+		   src/task_data_widget.cpp \
+		   src/task_data_box.cpp
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp

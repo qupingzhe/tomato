@@ -63,8 +63,9 @@ void QTomato::finishTask( int id )
 void QTomato::getTaskData( std::vector<QTaskData>& qtaskDatas )
 {
 	tomato->getTaskData( taskDatas );
-	for( int i=0; i<taskDatas.size(); ++i ) {
-		qtaskDatas.push_back( QTaskData(taskDatas[i]) );
+	for( std::vector<TaskData>::iterator i=taskDatas.begin(); i!=taskDatas.end(); ++i ) {
+	//for( int i=0; i<taskDatas.size(); ++i ) {
+		qtaskDatas.push_back( QTaskData(*i) );
 	}
 }
 
