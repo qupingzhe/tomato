@@ -33,7 +33,7 @@ signals:
 	void workTimeChanged( int minutes );
 	void restTimeChanged( int minutes );
 public slots:
-	void updateTask( std::vector<QTask> &qtasks );
+	void updateTask( const std::vector<QTask> &qtasks );
 	void updateTask( QTask qtask );
 private slots:
 	void doStart( void );

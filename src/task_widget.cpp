@@ -104,9 +104,9 @@ void TaskWidget::updateTask( QTask qtask )
 	}
 }
 
-void TaskWidget::updateTask( std::vector<QTask> &qtasks )
+void TaskWidget::updateTask( const std::vector<QTask> &qtasks )
 {
-	for( std::vector<QTask>::iterator i=qtasks.begin(); i != qtasks.end(); ++i ) {
+	for( std::vector<QTask>::const_iterator i=qtasks.begin(); i != qtasks.end(); ++i ) {
 		this->updateTask( *i );
 	}
 }

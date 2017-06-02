@@ -52,6 +52,7 @@ Task Tomato::getTask( int id )
 	return tasks[id];
 }
 
+/*
 void Tomato::getAllTask( std::vector<int> &tasksID )
 {
 	for( std::map<int, Task>::iterator i = this->tasks.begin();
@@ -59,6 +60,7 @@ void Tomato::getAllTask( std::vector<int> &tasksID )
 		tasksID.push_back( (i->second).id );
 	}
 }
+*/
 
 void Tomato::chooseTask( int id )
 {
@@ -119,7 +121,9 @@ bool Tomato::isChoosed( int id )
 	return tasks[id].choosed;
 }
 
-void Tomato::getTaskData( std::vector<TaskData>& taskDatas, int dayOffset )
+//void Tomato::getTaskData( std::vector<TaskData>& taskDatas, int dayOffset ){}
+
+void Tomato::flushTaskData( int dayOffset )
 {
 	if( dayOffset > 7 ) {
 		return ;

@@ -5,7 +5,7 @@
 QTomato::QTomato( void )
 {
 	tomato = new Tomato();
-	tasksID.clear();
+	//tasksID.clear();
 }
 
 QTomato::~QTomato( void )
@@ -21,14 +21,30 @@ void QTomato::load( void )
 
 void QTomato::flush( void )
 {
-	tasksID.clear();
+	flushTask();
+	flushTaskData();
+}
+
+void QTomato::flushTask( void )
+{
 	tasks.clear();
-	tomato->getAllTask( tasksID );
-	for( std::vector<int>::iterator i=tasksID.begin(); i != tasksID.end(); ++i ) {
-		Task tmp = tomato->getTask( *i );
-		tasks.push_back( QTask(tmp) );
+	for( std::map<int, Task>::const_iterator i=tomato->beginForTask();
+			i != tomato->endForTask(); ++i ) {
+		//Task tmp = tomato->getTask( *i );
+		tasks.push_back( QTask(i->second) );
 	}
 	emit updateTask( tasks );
+}
+
+void QTomato::flushTaskData( void )
+{
+	tomato->flushTaskData();
+	taskDatas.clear();
+	for( std::vector<TaskData>::const_iterator i=tomato->beginForTaskData();
+			i != tomato->endForTaskData(); ++i ) {
+		taskDatas.push_back( QTaskData( *i ) );
+	}
+	emit updateTaskData( taskDatas );
 }
 
 void QTomato::start( int workingTime, int restingTime )
@@ -60,12 +76,14 @@ void QTomato::finishTask( int id )
 	emit updateTask( QTask(tomato->getTask(id)) );
 }
 
+/*
 void QTomato::getTaskData( std::vector<QTaskData>& qtaskDatas )
 {
-	tomato->getTaskData( taskDatas );
-	for( std::vector<TaskData>::iterator i=taskDatas.begin(); i!=taskDatas.end(); ++i ) {
+	//tomato->getTaskData( taskDatas );
+	//for( std::vector<TaskData>::iterator i=taskDatas.begin(); i!=taskDatas.end(); ++i ) {
 	//for( int i=0; i<taskDatas.size(); ++i ) {
-		qtaskDatas.push_back( QTaskData(*i) );
-	}
+		//qtaskDatas.push_back( QTaskData(*i) );
+//	}
 }
+*/
 

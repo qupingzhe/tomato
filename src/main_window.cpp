@@ -39,23 +39,45 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 	//mainWidget->addTab( taskDataWidget, tr("task data") );
 	setCentralWidget( mainWidget );
 
+	connect( taskWidget, SIGNAL(start()),
+			this, SLOT(start()) );
+
+	connectUpdateData();
+	connectDataStream();
+	connectTimer();
+
+	connect( taskWidget, SIGNAL(workTimeChanged(int)),
+			this, SLOT(changeWorkTime(int)) );
+	connect( taskWidget, SIGNAL(restTimeChanged(int)),
+			this, SLOT(changeRestTime(int)) );
+
+	workingDialog->setModal( true );
+	restingDialog->setModal( true );
+	load();
+}
+
+void TomatoMainWindow::connectDataStream( void )
+{
+	connect( tomato, SIGNAL(updateTask(const std::vector<QTask>&)),
+			taskWidget, SLOT(updateTask(const std::vector<QTask>&)) );
+	connect( tomato, SIGNAL(updateTaskData(const std::vector<QTaskData>&)),
+			taskDataWidget, SLOT(updateTaskData(const std::vector<QTaskData>)) );
+}
+
+void TomatoMainWindow::connectUpdateData( void )
+{
 	connect( newTaskDialog, SIGNAL(addTask(QTask)),
 			tomato, SLOT(addTask(QTask)) );
 	connect( taskWidget, SIGNAL(chooseTask(int)),
 			tomato, SLOT(chooseTask(int)) );
 	connect( taskWidget, SIGNAL(finishTask(int)),
 			tomato, SLOT(finishTask(int)) );
-
 	connect( tomato, SIGNAL(updateTask(QTask)),
 			taskWidget, SLOT(updateTask(QTask)) );
-	connect( tomato, SIGNAL(updateTask(std::vector<QTask>&)),
-			taskWidget, SLOT(updateTask(std::vector<QTask>&)) );
+}
 
-	connect( taskWidget, SIGNAL(start()),
-			this, SLOT(start()) );
-	connect( taskDataWidget, SIGNAL(getTaskData(std::vector<QTaskData>&)),
-			tomato, SLOT(getTaskData(std::vector<QTaskData>&)) );
-
+void TomatoMainWIndow::connectTimer( void )
+{
 	connect( timer, SIGNAL(finishWork()),
 			this, SLOT(finishWork()) );
 	connect( timer, SIGNAL(finishRest()),
@@ -64,14 +86,6 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 			workingDialog, SLOT(changeTime(int)) );
 	connect( timer, SIGNAL(displayTime(int)),
 			restingDialog, SLOT(changeTime(int)) );
-
-	connect( taskWidget, SIGNAL(workTimeChanged(int)),
-			this, SLOT(changeWorkTime(int)) );
-	connect( taskWidget, SIGNAL(restTimeChanged(int)),
-			this, SLOT(changeRestTime(int)) );
-	workingDialog->setModal( true );
-	restingDialog->setModal( true );
-	load();
 }
 
 void TomatoMainWindow::load( void )
@@ -80,7 +94,7 @@ void TomatoMainWindow::load( void )
 	taskWidget->load();
 	timer->setTime( workTime, restTime );
 	newTaskDialog->load();
-	taskDataWidget->load();
+	//taskDataWidget->load();
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
