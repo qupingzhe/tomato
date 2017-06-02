@@ -14,7 +14,6 @@ public:
 
 	int addTask( Task task );
 	Task getTask( int id );
-	//void getAllTask( std::vector<int>& tasksID );
 	std::map<int,Task>::const_iterator beginForTask() {
 		return tasks.begin();
 	}
@@ -30,14 +29,12 @@ public:
 	}
 
 	void flushTaskData( int dayOffset = 7 );
+	void flushTask( void );
 
-	void chooseTask( int id );
-	void finishTask( int id );
+	void chooseTask( int id, bool status );
+	void finishTask( int id, bool status );
 	void start( int woringTime, int restingTime );
 	void end( void );
-
-	bool isChoosed( int id );
-	//void getTaskData( std::vector<TaskData>& taskDatas, int dayOffset = 7 );
 private:
 	bool isIncludeDays( tm* old, tm* now, int dayOffset, TaskData* result );
 	std::map<int, Task> tasks;

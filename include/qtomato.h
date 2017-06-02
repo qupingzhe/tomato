@@ -25,14 +25,13 @@ signals:
 	void updateTaskData( const std::vector<QTaskData>& qtaskDatas );
 public slots:
 	void addTask( QTask qtask );
-	void chooseTask( int id );
-	void finishTask( int id );
+	void chooseTask( int id, bool status );
+	void finishTask( int id, bool status );
+
 	void start( int workingTime, int restingTime );
 	void end( void );
-	//void getTaskData( std::vector<QTaskData>& qtaskDatas );
 private:
 	Tomato* tomato;
-	//std::vector<int> tasksID;
 	std::vector<QTask> tasks;
 	std::vector<QTaskData> taskDatas;
 };

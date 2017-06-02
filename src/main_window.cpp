@@ -18,26 +18,26 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 	timer = new TomatoTimer;
 
 	mainWidget = new QTabWidget;
+	setCentralWidget( mainWidget );
+
 	taskWidget = new TaskWidget;
+	mainWidget->addTab( taskWidget, tr("main page") );
 
 	newTaskDialog = new NewTaskDialog;
 	taskDataWidget = new TaskDataWidget;
 
 	workingDialog = new TimeDialog;
 	workingDialog->setWindowTitle( "working" );
+	workingDialog->setModal( true );
+
 	restingDialog = new TimeDialog;
 	restingDialog->setWindowTitle( "resting" );
+	restingDialog->setModal( true );
 	QFont font;
 	font.setPointSize( 30 );
 	restingDialog->setFont( font );
 
 	createMenuBar();
-
-	taskDataWidget->hide();
-
-	mainWidget->addTab( taskWidget, tr("main page") );
-	//mainWidget->addTab( taskDataWidget, tr("task data") );
-	setCentralWidget( mainWidget );
 
 	connect( taskWidget, SIGNAL(start()),
 			this, SLOT(start()) );
@@ -51,50 +51,7 @@ TomatoMainWindow::TomatoMainWindow( QWidget* parent ) : QMainWindow( parent )
 	connect( taskWidget, SIGNAL(restTimeChanged(int)),
 			this, SLOT(changeRestTime(int)) );
 
-	workingDialog->setModal( true );
-	restingDialog->setModal( true );
 	load();
-}
-
-void TomatoMainWindow::connectDataStream( void )
-{
-	connect( tomato, SIGNAL(updateTask(const std::vector<QTask>&)),
-			taskWidget, SLOT(updateTask(const std::vector<QTask>&)) );
-	connect( tomato, SIGNAL(updateTaskData(const std::vector<QTaskData>&)),
-			taskDataWidget, SLOT(updateTaskData(const std::vector<QTaskData>)) );
-}
-
-void TomatoMainWindow::connectUpdateData( void )
-{
-	connect( newTaskDialog, SIGNAL(addTask(QTask)),
-			tomato, SLOT(addTask(QTask)) );
-	connect( taskWidget, SIGNAL(chooseTask(int)),
-			tomato, SLOT(chooseTask(int)) );
-	connect( taskWidget, SIGNAL(finishTask(int)),
-			tomato, SLOT(finishTask(int)) );
-	connect( tomato, SIGNAL(updateTask(QTask)),
-			taskWidget, SLOT(updateTask(QTask)) );
-}
-
-void TomatoMainWIndow::connectTimer( void )
-{
-	connect( timer, SIGNAL(finishWork()),
-			this, SLOT(finishWork()) );
-	connect( timer, SIGNAL(finishRest()),
-			this, SLOT(finishRest()) );
-	connect( timer, SIGNAL(displayTime(int)),
-			workingDialog, SLOT(changeTime(int)) );
-	connect( timer, SIGNAL(displayTime(int)),
-			restingDialog, SLOT(changeTime(int)) );
-}
-
-void TomatoMainWindow::load( void )
-{
-	tomato->load();
-	taskWidget->load();
-	timer->setTime( workTime, restTime );
-	newTaskDialog->load();
-	//taskDataWidget->load();
 }
 
 TomatoMainWindow::~TomatoMainWindow( void )
@@ -115,6 +72,13 @@ TomatoMainWindow::~TomatoMainWindow( void )
 	delete mainWidget;
 }
 
+void TomatoMainWindow::load( void )
+{
+	tomato->load();
+	taskWidget->load();
+	newTaskDialog->load();
+}
+
 void TomatoMainWindow::createMenuBar( void )
 {
 	fileMenu = new QMenu( tr("file") );
@@ -131,6 +95,46 @@ void TomatoMainWindow::createMenuBar( void )
 			taskDataWidget, SLOT(show()) );
 }
 
+void TomatoMainWindow::connectDataStream( void )
+{
+	connect( tomato, SIGNAL(updateTask(const std::vector<QTask>&)),
+			taskWidget, SLOT(updateTask(const std::vector<QTask>&)) );
+	connect( tomato, SIGNAL(updateTaskData(const std::vector<QTaskData>&)),
+			taskDataWidget, SLOT(updateTaskData(const std::vector<QTaskData>)) );
+}
+
+void TomatoMainWindow::connectUpdateData( void )
+{
+	connect( newTaskDialog, SIGNAL(addTask(QTask)),
+			tomato, SLOT(addTask(QTask)) );
+	connect( taskWidget, SIGNAL(chooseTask(int, bool)),
+			tomato, SLOT(chooseTask(int, bool)) );
+	connect( taskWidget, SIGNAL(finishTask(int, bool)),
+			tomato, SLOT(finishTask(int, bool)) );
+	connect( tomato, SIGNAL(updateTask(QTask)),
+			taskWidget, SLOT(updateTask(QTask)) );
+}
+
+void TomatoMainWindow::connectTimer( void )
+{
+	connect( timer, SIGNAL(finishWork()),
+			this, SLOT(finishWork()) );
+	connect( timer, SIGNAL(finishRest()),
+			this, SLOT(finishRest()) );
+	connect( timer, SIGNAL(displayTime(int)),
+			workingDialog, SLOT(changeTime(int)) );
+	connect( timer, SIGNAL(displayTime(int)),
+			restingDialog, SLOT(changeTime(int)) );
+}
+
+
+void TomatoMainWindow::start( void )
+{
+	tomato->start( workTime, restTime );
+	timer->start();
+	workingDialog->show();
+}
+
 void TomatoMainWindow::finishRest( void )
 {
 	tomato->end();
@@ -143,12 +147,6 @@ void TomatoMainWindow::finishWork( void )
 	restingDialog->showFullScreen();
 }
 
-void TomatoMainWindow::start( void )
-{
-	tomato->start( workTime, restTime );
-	timer->start();
-	workingDialog->show();
-}
 
 void TomatoMainWindow::changeRestTime( int minutes )
 {

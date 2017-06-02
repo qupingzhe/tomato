@@ -74,14 +74,14 @@ void TaskWidget::load( void )
 	restTimeBox->setValue( 5 );
 }
 
-void TaskWidget::finishChildTask( int id, bool flag )
+void TaskWidget::finishChildTask( int id, bool status )
 {
-	emit finishTask( id );
+	emit finishTask( id, status );
 }
 
-void TaskWidget::chooseChildTask( int id, bool flag )
+void TaskWidget::chooseChildTask( int id, bool status )
 {
-	emit chooseTask( id );
+	emit chooseTask( id, status );
 }
 
 void TaskWidget::updateTask( QTask qtask )

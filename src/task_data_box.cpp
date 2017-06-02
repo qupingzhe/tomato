@@ -23,7 +23,6 @@ TaskDataCanvas::TaskDataCanvas( QWidget* parent ) : QWidget(parent)
 
 void TaskDataCanvas::paintEvent( QPaintEvent* event )
 {
-	//emit getTaskData( qtaskDatas );
 	int utilizationMinutes = 0;
 	QPainter painter( this );
 	painter.setPen( Qt::NoPen );

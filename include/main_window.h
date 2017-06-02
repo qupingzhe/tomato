@@ -19,9 +19,12 @@ class TomatoMainWindow : public QMainWindow
 	Q_OBJECT
 public:
 	TomatoMainWindow( QWidget* parent = NULL );
+	~TomatoMainWindow( void );
 	void load( void );
 	void createMenuBar( void );
-	~TomatoMainWindow( void );
+	void connectDataStream( void );
+	void connectUpdateData( void );
+	void connectTimer( void );
 private slots:
 	void start( void );
 	void finishRest( void );

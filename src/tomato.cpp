@@ -16,14 +16,8 @@ Tomato::Tomato( void )
 
 Tomato::~Tomato( void )
 {
-	std::wofstream wout;
-	wout.imbue( std::locale( "zh_CN.UTF-8" ) );
-	wout.open( TASK_PATH, std::ios::out );
-	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
-		wout << i->second << std::endl;
-	}
-	wout.close();
 	tasks.clear();
+	taskDatas.clear();
 }
 
 void Tomato::load( void )
@@ -33,7 +27,6 @@ void Tomato::load( void )
 	win.open( TASK_PATH, std::ios::in );
 	Task tmp;
 	while( win >> tmp ) {
-		//std::wcout << tmp << std::endl;
 		this->addTask( tmp );
 	}
 	win.imbue( std::locale( "C" ) );
@@ -52,24 +45,15 @@ Task Tomato::getTask( int id )
 	return tasks[id];
 }
 
-/*
-void Tomato::getAllTask( std::vector<int> &tasksID )
-{
-	for( std::map<int, Task>::iterator i = this->tasks.begin();
-			i != this->tasks.end(); ++i ) {
-		tasksID.push_back( (i->second).id );
-	}
-}
-*/
 
-void Tomato::chooseTask( int id )
+void Tomato::chooseTask( int id, bool status )
 {
-	tasks[id].choosed = !tasks[id].choosed;
+	tasks[id].choosed = status;
 }
 
-void Tomato::finishTask( int id )
+void Tomato::finishTask( int id, bool status )
 {
-	tasks[id].finished= !tasks[id].finished;
+	tasks[id].finished= status;
 }
 
 void Tomato::start( int workingTime, int restingTime )
@@ -88,8 +72,6 @@ void Tomato::start( int workingTime, int restingTime )
 			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_mon+1 << " ";
 			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_mday << " ";
 
-			//wout << std::setfill( L'0' ) << std::setw(2) << now.tm_hour << ":";
-			//wout << std::setfill( L'0' ) << std::setw(2) << now.tm_min << ":";
 			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_hour << " ";
 			wout << std::setfill( L'0' ) << std::setw(2) << now.tm_min << " ";
 
@@ -114,14 +96,20 @@ void Tomato::end( void )
 		}
 		(i->second).choosed = false;
 	}
+	flushTask();
 }
 	
-bool Tomato::isChoosed( int id )
-{
-	return tasks[id].choosed;
-}
 
-//void Tomato::getTaskData( std::vector<TaskData>& taskDatas, int dayOffset ){}
+void Tomato::flushTask( void )
+{
+	std::wofstream wout;
+	wout.imbue( std::locale( "zh_CN.UTF-8" ) );
+	wout.open( TASK_PATH, std::ios::out );
+	for( std::map<int, Task>::iterator i = tasks.begin(); i != tasks.end(); ++i ) {
+		wout << i->second << std::endl;
+	}
+	wout.close();
+}
 
 void Tomato::flushTaskData( int dayOffset )
 {

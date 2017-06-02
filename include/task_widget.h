@@ -24,12 +24,12 @@ public:
 	TaskWidget( void );
 	void load( void );
 	~TaskWidget( void );
-	void finishChildTask( int id, bool flag );
-	void chooseChildTask( int id, bool flag );
+	void finishChildTask( int id, bool status );
+	void chooseChildTask( int id, bool status );
 signals:
 	void start( void );
-	void chooseTask( int id );
-	void finishTask( int id );
+	void chooseTask( int id, bool status );
+	void finishTask( int id, bool status );
 	void workTimeChanged( int minutes );
 	void restTimeChanged( int minutes );
 public slots:
