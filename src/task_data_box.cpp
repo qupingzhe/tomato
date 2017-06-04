@@ -5,16 +5,6 @@
 #include <QHBoxLayout>
 #include <QPainter>
 
-/*
-void TaskDataCanvas::drawInCanvas( int offset, QColor color )
-{
-	QPainter painter( this );
-	painter.setPen( Qt::NoPen );
-	painter.setBrush( QBrush(color) );
-	painter.drawRect( offset, 0, 1, 20 );
-}
-*/
-
 TaskDataCanvas::TaskDataCanvas( QWidget* parent ) : QWidget(parent)
 {
 	setMinimumWidth( 900 );
@@ -74,6 +64,8 @@ std::vector<QTaskData>& TaskDataCanvas::getTaskDatas( void )
 	return this->qtaskDatas;
 }
 
+
+
 QColor TaskDataBox::NO_USING_COLOR = QColor(Qt::black);
 
 TaskDataBox::TaskDataBox( int dayOffset, QWidget* parent ) : QWidget( parent )
@@ -112,15 +104,3 @@ void TaskDataBox::utilizationRate(int rate)
 	utilizationRateLabel->setText( QString("%1%").arg(rate));
 }
 
-
-/*
-void TaskDataBox::drawTaskData( int minutes, QColor color )
-{
-	if( color != NO_USING_COLOR ) {
-		utilizationTime++;
-	}
-	allTime++;
-	utilizationRateLabel->setText( QString("%1%%").arg(utilizationTime*100/allTime) );
-	taskDataCanvas->drawInCanvas( minutes, color );
-}
-*/

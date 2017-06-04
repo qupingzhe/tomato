@@ -17,7 +17,6 @@ class TaskDataWidget : public QWidget
 public:
 	TaskDataWidget( QWidget* parent = NULL );
 	~TaskDataWidget( void );
-	//void load( void );
 	static QColor getColor( QString tag )
 	{
 		static const QString book = QString::fromStdWString( L"看书" );
@@ -46,10 +45,6 @@ public:
 	}
 public slots:
 	void updateTaskData( const std::vector<QTaskData>& qtaskDatas );
-signals:
-	//void getTaskData( std::vector<QTaskData>& qtaskDatas );
-protected:
-	//void paintEvent( QPaintEvent* event );
 private:
 	std::vector<QTaskData> qtaskDatas;
 

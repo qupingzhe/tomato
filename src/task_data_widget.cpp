@@ -26,15 +26,6 @@ TaskDataWidget::~TaskDataWidget( void )
 	delete layout;
 }
 
-/*
-void TaskDataWidget::load( void )
-{
-	//emit getTaskData( qtaskDatas );
-	for( std::vector<QTaskData>::iterator i=qtaskDatas.begin(); i!=qtaskDatas.end(); ++i ) {
-	}
-}
-*/
-
 void TaskDataWidget::updateTaskData( const std::vector<QTaskData>& qtaskDatas )
 {
 	for( int i=0; i<=MAX_DAY_OFFSET; ++i ) {
@@ -45,6 +36,4 @@ void TaskDataWidget::updateTaskData( const std::vector<QTaskData>& qtaskDatas )
 		taskDataBox[i->dayOffset]->getTaskDatas().push_back(*i);
 	}
 }
-
-
 

@@ -9,8 +9,6 @@
 #include <QComboBox>
 #include <QFile>
 
-//#include <iostream>
-
 NewTaskDialog::NewTaskDialog( QWidget* parent ) : QDialog( parent )
 {
 	mainLayout = new QFormLayout;
