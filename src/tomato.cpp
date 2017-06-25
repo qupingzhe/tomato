@@ -16,6 +16,7 @@ Tomato::Tomato( void )
 
 Tomato::~Tomato( void )
 {
+	flushTask();
 	tasks.clear();
 	taskDatas.clear();
 }
