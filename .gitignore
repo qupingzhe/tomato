@@ -7,3 +7,4 @@ tomato
 tomato.bak
 Makefile
 tags
+test/*
