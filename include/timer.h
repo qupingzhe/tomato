@@ -5,26 +5,29 @@
 
 class QTimer;
 
-class TomatoTimer : public QObject
-{
+namespace tomato {
+
+class TomatoTimer : public QObject {
 	Q_OBJECT
 public:
-	TomatoTimer( void );
-	~TomatoTimer( void );
-	void setTime( int workTime, int restTime );
+	TomatoTimer();
+	~TomatoTimer();
+	void SetTimer(int workTime, int restTime);
 signals:
-	void finishWork();
-	void finishRest();
-	void displayTime( int time );
+	void FinishWork();
+	void FinishRest();
+	void DisplayTime( int time );
 public slots:
-	void start();
+	void Start();
 private slots:
-	void timeout();
+	void Timeout();
 private:
-	QTimer* timer;
-	int remainingTime;
-	int restTime;
-	int workTime;
+	QTimer* timer_;
+	int remaining_time_;
+	int rest_time_;
+	int work_time_;
 };
+
+}
 
 #endif

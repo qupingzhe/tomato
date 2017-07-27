@@ -1,51 +1,51 @@
 #include "timer.h"
+
 #include <QTimer>
 
-TomatoTimer::TomatoTimer( void )
-{
-	this->timer = new QTimer;
-	connect( timer, SIGNAL(timeout()),
-			this, SLOT(timeout()) );
+namespace tomato {
+
+TomatoTimer::TomatoTimer() {
+	timer_ = new QTimer;
+	connect(timer_, SIGNAL(timeout()),
+			this, SLOT(Timeout()));
 }
 
-TomatoTimer::~TomatoTimer( void )
-{
-	timer->stop();
-	delete timer;
+TomatoTimer::~TomatoTimer() {
+	timer_->stop();
+	delete timer_;
 }
 
-void TomatoTimer::start( void )
-{
-	remainingTime = workTime + restTime;
-	if( remainingTime > 0 ) {
-		emit displayTime( remainingTime-restTime );
-		timer->start( 1000 );
+void TomatoTimer::Start() {
+	remaining_time_ = work_time_ + rest_time_;
+	if (remaining_time_ > 0) {
+		emit DisplayTime(remaining_time_ - rest_time_);
+		timer_->start(1000);
 	}
 }
 
-void TomatoTimer::setTime( int workTime, int restTime )
-{
-	this->workTime = workTime*60;
-	this->restTime = restTime*60;
-	//this->workTime = workTime;
-	//this->restTime = restTime;
-	this->remainingTime = this->workTime + this->restTime;
-	emit displayTime( this->workTime );
+void TomatoTimer::SetTimer(int work_time, int rest_time) {
+	work_time_ = work_time * 60;
+	rest_time_ = rest_time * 60;
+	//work_time_ = work_time;
+	//rest_time_ = rest_time;
+	remaining_time_ = work_time_ + rest_time_;
+	emit DisplayTime(work_time_);
 }
 
-void TomatoTimer::timeout( void )
-{
-	--remainingTime;
-	if( remainingTime == restTime ) {
-		emit finishWork();
+void TomatoTimer::Timeout() {
+	--remaining_time_;
+	if( remaining_time_ == rest_time_ ) {
+		emit FinishWork();
 	}
-	if( remainingTime == 0 ) {
-		emit finishRest();
-		timer->stop();
+	if( remaining_time_ == 0 ) {
+		emit FinishRest();
+		timer_->stop();
 		return ;
 	}
-	int tmp = remainingTime > restTime ? remainingTime-restTime : remainingTime;
-	emit displayTime( tmp );
-	timer->start( 1000 );
+	int tmp = remaining_time_ > rest_time_?
+                remaining_time_ - rest_time_ : remaining_time_;
+	emit DisplayTime(tmp);
+	timer_->start(1000);
 }
 
+}

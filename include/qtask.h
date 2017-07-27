@@ -9,7 +9,7 @@ namespace tomato {
 struct QTask {
 	QTask();
 	QTask(const Task& task);
-	Task toTask();
+	Task ToTask();
 
   BasicTask basic_task;
 	QString tag;
@@ -18,7 +18,7 @@ struct QTask {
 
 struct QDataTime {
 	QDataTime(const DataTime& data_time);
-	DataTime toDataTime();
+	DataTime ToDataTime();
 
   BasicDataTime basic_data_time;
 	QString tag;

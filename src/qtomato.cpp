@@ -52,7 +52,7 @@ void QTomato::End() {
 }
 
 void QTomato::AddTask(QTask qtask) {
-	int id = tomato_->AddTask(qtask.toTask());
+	int id = tomato_->AddTask(qtask.ToTask());
 	emit UpdateTask(QTask(tomato_->GetTask(id)));
 }
 

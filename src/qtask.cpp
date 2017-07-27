@@ -2,7 +2,7 @@
 
 namespace tomato {
 
-QTask::QTask( void ) {
+QTask::QTask() {
 	;
 }
 
@@ -12,7 +12,7 @@ QTask::QTask(const  Task& task ) {
 	name = QString::fromStdWString(task.name);
 }
 
-Task QTask::toTask() {
+Task QTask::ToTask() {
 	Task task;
   task.basic_task = basic_task;
 	task.tag = tag.toStdWString();
@@ -21,18 +21,18 @@ Task QTask::toTask() {
 }
 
 
-QTaskData::QTaskData(const DataTime& data_time) {
+QDataTime::QDataTime(const DataTime& data_time) {
   basic_data_time = data_time.basic_data_time;
 	tag = QString::fromStdWString(data_time.tag);
 	name = QString::fromStdWString(data_time.name);
 }
 
-DataTime QTaskData::toTaskData() {
+DataTime QDataTime::ToDataTime() {
   DataTime data_time;
   data_time.basic_data_time = basic_data_time;
 	data_time.tag = tag.toStdWString();
   data_time.name = name.toStdWString();
-	return taskData;
+	return data_time;
 }
 
 }

@@ -8,32 +8,32 @@ DEPENDPATH += . include src
 INCLUDEPATH += . include
 
 # Input
-HEADERS += include/main_window.h \
-           include/new_task_dialog.h \
+HEADERS += include/main-window.h \
+           include/new-task-dialog.h \
            include/qtask.h \
            include/qtomato.h \
-		   include/task.h \
-           include/task_widget.h \
-           include/time_dialog.h \
+           include/task.h \
+           include/task-widget.h \
+           include/time-dialog.h \
            include/tomato.h \
-		   include/timer.h \
-		   include/task_box.h \
-		   include/task_data_widget.h \
-		   include/task_data_box.h
+           include/timer.h \
+           include/task-box.h \
+           include/data-time-widget.h \
+           include/data-time-box.h
 
 SOURCES += src/main.cpp \
-           src/main_window.cpp \
-           src/new_task_dialog.cpp \
-		   src/qtask.cpp \
+           src/main-window.cpp \
+           src/new-task-dialog.cpp \
+           src/qtask.cpp \
            src/qtomato.cpp \
-		   src/task.cpp \
-           src/task_widget.cpp \
-           src/time_dialog.cpp \
+           src/task.cpp \
+           src/task-widget.cpp \
+           src/time-dialog.cpp \
            src/tomato.cpp \
-		   src/timer.cpp \
-		   src/task_box.cpp \
-		   src/task_data_widget.cpp \
-		   src/task_data_box.cpp
+           src/timer.cpp \
+           src/task-box.cpp \
+           src/data-time-widget.cpp \
+           src/data-time-box.cpp
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
