@@ -1,25 +1,30 @@
 #ifndef Q_TASK_H
 #define Q_TASK_H
-#include "task.h"
+
 #include <QString>
+#include "task.h"
 
-class QTask : public BasicTask
-{
-public:
-	QTask( void );
-	QTask( Task task );
-	Task toTask( void );
+namespace tomato {
 
+struct QTask {
+	QTask();
+	QTask(const Task& task);
+	Task toTask();
+
+  BasicTask basic_task;
 	QString tag;
 	QString name;
 };
 
-class QTaskData : public BasicTaskData
-{
-public:
-	QTaskData( TaskData taskData );
-	TaskData toTaskData( void );
+struct QDataTime {
+	QDataTime(const DataTime& data_time);
+	DataTime toDataTime();
+
+  BasicDataTime basic_data_time;
 	QString tag;
+  QString name;
 };
+
+}
 
 #endif

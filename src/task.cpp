@@ -102,7 +102,7 @@ TaskData::TaskData( BasicTaskData taskData ) : BasicTaskData(taskData)
 
 namespace tomato {
 
-Task::Task() {
+BasicTask::BasicTask() {
   id = -1;
   using_time = 0;
   needing_time = 1;
@@ -110,53 +110,71 @@ Task::Task() {
   finished = false;
   creating_time = 0;
   finishing_time = 0;
-  tag = L"";
-  name = L"";
 }
 
-void Task::Initialize(const std::wstring& tag, const std::wstring& name,
-                      const int needing_time) {
+void BasicTask::Initialize(const int needing_time) {
   this->id = -1;
   this->using_time = 0;
   this->choosed = false;
   this->finished = false;
   this->creating_time = time(NULL);
   this->finishing_time = 0;
-  this->tag = tag;
-  this->name = name;
   this->needing_time = needing_time;
 }
 
-std::wistream& operator>>(std::wistream& in, Task& task) {
+std::wistream& operator>>(std::wistream& in, BasicTask& basic_task) {
   wchar_t tmp;
-  in >> tmp >> task.using_time >> task.needing_time;
-  in >> task.creating_time >> task.finishing_time;
-  in.imbue(std::locale("zh_CN.UTF-8"));
-  in >> task.tag >> task.name;
-  in.imbue(std::locale("C"));
+  in >> tmp >> basic_task.using_time >> basic_task.needing_time;
+  in >> basic_task.creating_time >> basic_task.finishing_time;
   if (tmp == L'#') {
-    task.finished = true;
+    basic_task.finished = true;
   } else {
-    task.finished = false;
+    basic_task.finished = false;
   }
   return in;
 }
 
-std::wostream& operator<<(std::wostream& out, const Task& task) {
+std::wostream& operator<<(std::wostream& out, const BasicTask& basic_task) {
   wchar_t tmp;
-  if (task.finished) {
+  if (basic_task.finished) {
     tmp = L'#';
-  } else if (task.using_time < task.needing_time) {
+  } else if (basic_task.using_time < basic_task.needing_time) {
     tmp = L'-';
-  } else if (task.using_time > task.needing_time) {
+  } else if (basic_task.using_time > basic_task.needing_time) {
     tmp = L'+';
   } else {
     tmp = L'=';
   }
-  out << tmp << L" " << task.using_time << L" " << task.needing_time << L" ";
-  out << task.creating_time << L" " << task.finishing_time << L" ";
+  out << tmp << L" " << basic_task.using_time << L" " << basic_task.needing_time;
+  out << L" " << basic_task.creating_time << L" " << basic_task.finishing_time;
+  return out;
+}
+
+
+Task::Task() {
+  tag = L"";
+  name = L"";
+}
+
+void Task::Initialize(const std::wstring& tag, const std::wstring& name,
+                      const int needing_time) {
+  basic_task.Initialize(needing_time);
+  this->tag = tag;
+  this->name = name;
+}
+
+std::wistream& operator>>(std::wistream& in, Task& task) {
+  in >> task.basic_task;
+  in.imbue(std::locale("zh_CN.UTF-8"));
+  in >> task.tag >> task.name;
+  in.imbue(std::locale("C"));
+  return in;
+}
+
+std::wostream& operator<<(std::wostream& out, const Task& task) {
+  out << task.basic_task;
   out.imbue(std::locale("zh_CN.UTF-8"));
-  out << task.tag << L" " << task.name;
+  out << L" " << task.tag << L" " << task.name;
   out.imbue(std::locale("C"));
   return out;
 }

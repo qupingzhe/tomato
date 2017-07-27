@@ -60,13 +60,11 @@ namespace tomato {
 
 //static int ID;
 
-struct Task {
-  Task();
-  void Initialize(const std::wstring& tag, const std::wstring& name,
-                  const int needing_time = 1);
-
-  friend std::wistream& operator>>(std::wistream& in, Task& task);
-  friend std::wostream& operator<<(std::wostream& out, const Task& task);
+struct BasicTask {
+  BasicTask();
+  void Initialize(const int needing_time);
+  friend std::wistream& operator>>(std::wistream& in, BasicTask& basic_task);
+  friend std::wostream& operator<<(std::wostream& out, const BasicTask& basic_task);
 
   int id;
   int using_time;
@@ -75,15 +73,30 @@ struct Task {
   bool finished;
   time_t creating_time;
   time_t finishing_time;
+};
+
+struct Task {
+  Task();
+  void Initialize(const std::wstring& tag, const std::wstring& name,
+                  const int needing_time = 1);
+
+  friend std::wistream& operator>>(std::wistream& in, Task& task);
+  friend std::wostream& operator<<(std::wostream& out, const Task& task);
+
+  BasicTask basic_task;
   std::wstring tag;
   std::wstring name;
 };
 
-struct DataTime {
-  //Time(std::wstring tag, std::wstring name, int dayOffset, 
+struct BasicDataTime {
   int day_offset;
   int start_minute;
   int end_minute;
+};
+
+struct DataTime {
+  //Time(std::wstring tag, std::wstring name, int dayOffset, 
+  BasicDataTime basic_data_time;
   std::wstring tag;
   std::wstring name;
 };
@@ -95,16 +108,17 @@ struct Data {
                   const int work_time = 25, const int rest_time = 5,
                   const int flag = 0);
 
-  static DataTime toDataTime(const time_t now, const Data& data) {
+  static DataTime ToDataTime(const time_t now, const Data& data) {
       DataTime result;
       if (now < data.start_time) {
-          result.day_offset = -1;
+          result.basic_data_time.day_offset = -1;
           return result;
       }
       tm* tmp = localtime(&data.start_time);
-      result.start_minute = tmp->tm_hour * 60 + tmp->tm_min;
-      result.end_minute = result.start_minute + data.work_time + data.rest_time;
-      result.day_offset = now/86400 - data.start_time/86400;
+      result.basic_data_time.start_minute = tmp->tm_hour * 60 + tmp->tm_min;
+      result.basic_data_time.end_minute = result.basic_data_time.start_minute
+                                          + data.work_time + data.rest_time;
+      result.basic_data_time.day_offset = now/86400 - data.start_time/86400;
       result.tag = data.tag;
       result.name = data.name;
       return result;

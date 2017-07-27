@@ -1,39 +1,44 @@
 #ifndef Q_TOMATO_H
 #define Q_TOMATO_H
 
+
 #include <QObject>
 #include <QString>
-#include "qtask.h"
 
+#include "qtask.h"
 #include "tomato.h"
 
 class QTimer;
+
+namespace tomato {
 
 class QTomato : public QObject
 {
 	Q_OBJECT
 public:
-	QTomato( void );
-	~QTomato( void );
-	void load( void );
-	void flush( void );
-	void flushTask( void );
-	void flushTaskData( void );
+	QTomato();
+	~QTomato();
+	void Load();
+	void Flush();
+	void FlushTask();
+	void FlushDataTime();
 signals:
-	void updateTask( QTask qtask );
-	void updateTask( const std::vector<QTask> &qtasks );
-	void updateTaskData( const std::vector<QTaskData>& qtaskDatas );
+	void UpdateTask(QTask qtask);
+	void UpdateTask(const std::vector<QTask>& tasks);
+	void UpdateDataTime(const std::vector<QDataTime>& data_times);
 public slots:
-	void addTask( QTask qtask );
-	void chooseTask( int id, bool status );
-	void finishTask( int id, bool status );
+	void AddTask(QTask qtask);
+	void ChooseTask(int id, bool status);
+	void FinishTask(int id, bool status);
 
-	void start( int workingTime, int restingTime );
-	void end( void );
+	void Start(int work_time, int rest_time);
+	void End(void);
 private:
-	Tomato* tomato;
-	std::vector<QTask> tasks;
-	std::vector<QTaskData> taskDatas;
+	Tomato* tomato_;
+	std::vector<QTask> tasks_;
+	std::vector<QDataTime> data_times_;
 };
+
+}
 
 #endif

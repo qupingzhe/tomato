@@ -2,75 +2,68 @@
 
 #include <iostream>
 
-QTomato::QTomato( void )
-{
-	tomato = new Tomato();
+namespace tomato {
+QTomato::QTomato() {
+	tomato_ = new Tomato();
 }
 
-QTomato::~QTomato( void )
-{
-	delete tomato;
+QTomato::~QTomato() {
+	delete tomato_;
+  tasks_.clear();
+  data_times_.clear();
 }
 
-void QTomato::load( void )
-{
-	tomato->load();
-	flush();
+void QTomato::Load() {
+	tomato_->Load();
+	Flush();
 }
 
-void QTomato::flush( void )
-{
-	flushTask();
-	flushTaskData();
+void QTomato::Flush() {
+	FlushTask();
+	FlushDataTime();
 }
 
-void QTomato::flushTask( void )
-{
-	tasks.clear();
-	for( std::map<int, Task>::const_iterator i=tomato->beginForTask();
-			i != tomato->endForTask(); ++i ) {
-		tasks.push_back( QTask(i->second) );
+void QTomato::FlushTask() {
+	tasks_.clear();
+	for (std::map<int,Task>::const_iterator i = tomato_->BeginForTask();
+			i != tomato_->EndForTask(); ++i) {
+		tasks_.push_back(QTask(i->second));
 	}
-	emit updateTask( tasks );
+	emit UpdateTask(tasks_);
 }
 
-void QTomato::flushTaskData( void )
-{
-	tomato->flushTaskData();
-	taskDatas.clear();
-	for( std::vector<TaskData>::const_iterator i=tomato->beginForTaskData();
-			i != tomato->endForTaskData(); ++i ) {
-		taskDatas.push_back( QTaskData( *i ) );
+void QTomato::FlushDataTime() {
+	//tomato->flushTaskData();
+	data_times_.clear();
+	for (std::vector<DataTime>::const_iterator i = tomato_->BeginForDataTime();
+			i != tomato_->EndForDataTime(); ++i ) {
+		data_times_.push_back(QDataTime(*i));
 	}
-	emit updateTaskData( taskDatas );
+	emit UpdateDataTime(data_times_);
 }
 
-void QTomato::start( int workingTime, int restingTime )
-{
-	tomato->start( workingTime, restingTime );
+void QTomato::Start(int work_time, int rest_time) {
+	tomato_->Start(work_time, rest_time);
 }
 
-void QTomato::end( void )
-{
-	tomato->end();
-	this->flush();
+void QTomato::End() {
+	tomato_->End();
+	Flush();
 }
 
-void QTomato::addTask( QTask qtask )
-{
-	int id = tomato->addTask( qtask.toTask() );
-	emit updateTask( QTask(tomato->getTask(id)) );
+void QTomato::AddTask(QTask qtask) {
+	int id = tomato_->AddTask(qtask.toTask());
+	emit UpdateTask(QTask(tomato_->GetTask(id)));
 }
 
-void QTomato::chooseTask( int id, bool status )
-{
-	tomato->chooseTask( id, status );
-	emit updateTask( QTask(tomato->getTask(id)) );
+void QTomato::ChooseTask(int id, bool status) {
+	tomato_->ChooseTask(id, status);
+	emit UpdateTask(QTask(tomato_->GetTask(id)));
 }
 
-void QTomato::finishTask( int id, bool status )
-{
-	tomato->finishTask( id, status );
-	emit updateTask( QTask(tomato->getTask(id)) );
+void QTomato::FinishTask(int id, bool status) {
+	tomato_->FinishTask(id, status);
+	emit UpdateTask(QTask(tomato_->GetTask(id)));
 }
 
+}

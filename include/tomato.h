@@ -11,34 +11,34 @@ class Tomato {
 public:
 	Tomato();
 	~Tomato();
-	void load();
+	void Load();
 
-	void start(int work_time, int rest_time);
-	void end();
-	void chooseTask(int id, bool status);
-	void finishTask(int id, bool status);
+	void Start(int work_time, int rest_time);
+	void End();
+	void ChooseTask(int id, bool status);
+	void FinishTask(int id, bool status);
 
-  bool hasTask(int id);
-	int addTask(Task task);
-	Task getTask(int id);
+  bool HasTask(int id);
+	int AddTask(Task task);
+	Task GetTask(int id);
 
-  void loadTask();
-	void saveTask();
-	std::map<int,Task>::const_iterator beginForTask();
-	std::map<int,Task>::const_iterator endForTask();
+  void LoadTask();
+	void SaveTask();
+	std::map<int,Task>::const_iterator BeginForTask();
+	std::map<int,Task>::const_iterator EndForTask();
 
-  void loadData();
-	void saveData();
+  void LoadData();
+	void SaveData();
 
-	std::vector<DataTime>::const_iterator beginForDataTime();
-	std::vector<DataTime>::const_iterator endForDataTime();
-  void flushDataTime();
+	std::vector<DataTime>::const_iterator BeginForDataTime();
+	std::vector<DataTime>::const_iterator EndForDataTime();
+  void FlushDataTime();
 
 private:
 	//bool isIncludeDays(tm* old, tm* now, int dayOffset, TaskData* result);
-	std::map<int, Task> tasks;
-	std::vector<DataTime> data_times;
-  std::vector<Data> datas;
+	std::map<int, Task> tasks_;
+	std::vector<DataTime> data_times_;
+  std::vector<Data> datas_;
 };
 
 }

@@ -17,30 +17,30 @@ Tomato::Tomato() {
 }
 
 Tomato::~Tomato() {
-	saveTask();
-  saveData();
+	SaveTask();
+  SaveData();
 
-	tasks.clear();
-  datas.clear();
-	data_times.clear();
+	tasks_.clear();
+  datas_.clear();
+	data_times_.clear();
 
 }
 
-void Tomato::load() {
-  loadTask();
-  loadData();
+void Tomato::Load() {
+  LoadTask();
+  LoadData();
 }
 
 
-void Tomato::start(int work_time, int rest_time) {
+void Tomato::Start(int work_time, int rest_time) {
 	//std::wofstream wout;
 	//wout.open(DATA_PATH, std::ios::app);
   
   Data tmp;
-	for (std::map<int,Task>::iterator i = tasks.begin(); i != tasks.end(); ++i) {
-		if ((i->second).choosed) {
+	for (std::map<int,Task>::iterator i = tasks_.begin(); i != tasks_.end(); ++i) {
+		if ((i->second).basic_task.choosed) {
       tmp.Initialize((i->second).tag, (i->second).name, work_time, rest_time);
-      datas.push_back(tmp);
+      datas_.push_back(tmp);
       //wout << tmp << std::endl;
 
       /*
@@ -65,114 +65,114 @@ void Tomato::start(int work_time, int rest_time) {
 	//wout.close();
 }
 
-void Tomato::end() {
-	for (std::map<int,Task>::iterator i = tasks.begin(); i != tasks.end(); ++i) {
-		if ((i->second).choosed && !(i->second).finished ) {
-			(i->second).using_time++;
+void Tomato::End() {
+	for (std::map<int,Task>::iterator i = tasks_.begin(); i != tasks_.end(); ++i) {
+		if ((i->second).basic_task.choosed && !(i->second).basic_task.finished ) {
+			(i->second).basic_task.using_time++;
 		}
-		(i->second).choosed = false;
+		(i->second).basic_task.choosed = false;
 	}
-	saveTask();
-  saveData();
-  flushDataTime();
+	SaveTask();
+  SaveData();
+  FlushDataTime();
 }
 
-void Tomato::chooseTask(int id, bool status) {
-  if (hasTask(id)) {
-    tasks[id].choosed = status;
+void Tomato::ChooseTask(int id, bool status) {
+  if (HasTask(id)) {
+    tasks_[id].basic_task.choosed = status;
   }
 }
 
-void Tomato::finishTask(int id, bool status) {
-  if (hasTask(id)) {
-    tasks[id].finished = status;
+void Tomato::FinishTask(int id, bool status) {
+  if (HasTask(id)) {
+    tasks_[id].basic_task.finished = status;
   }
 }
 
 
-bool Tomato::hasTask(int id) {
-  return (tasks.find(id) != tasks.end());
+bool Tomato::HasTask(int id) {
+  return (tasks_.find(id) != tasks_.end());
 }
 
-int Tomato::addTask(Task task) {
-	task.id = ++TASK_ID;
-	tasks[task.id] = task;
-	return task.id;
+int Tomato::AddTask(Task task) {
+	task.basic_task.id = ++TASK_ID;
+	tasks_[task.basic_task.id] = task;
+	return task.basic_task.id;
 }
 
-Task Tomato::getTask(int id) {
-  if (hasTask(id)) {
-    return tasks[id];
+Task Tomato::GetTask(int id) {
+  if (HasTask(id)) {
+    return tasks_[id];
   }
   return Task();
 }
 
 
-void Tomato::loadTask() {
+void Tomato::LoadTask() {
 	std::wifstream win;
 	//win.imbue(std::locale("zh_CN.UTF-8"));
 	win.open(TASK_PATH, std::ios::in);
 	Task tmp;
 	while (win >> tmp) {
-		addTask(tmp);
+		AddTask(tmp);
 	}
 	//win.imbue(std::locale("C"));
 	win.close();
 }
 
-void Tomato::saveTask() {
+void Tomato::SaveTask() {
 	std::wofstream wout;
 	wout.open(TASK_PATH, std::ios::out);
-	for (std::map<int,Task>::iterator i = tasks.begin(); i != tasks.end(); ++i) {
+	for (std::map<int,Task>::iterator i = tasks_.begin(); i != tasks_.end(); ++i) {
 		wout << i->second << std::endl;
 	}
 	wout.close();
 }
 
-std::map<int,Task>::const_iterator Tomato::beginForTask() {
-  return tasks.begin();
+std::map<int,Task>::const_iterator Tomato::BeginForTask() {
+  return tasks_.begin();
 }
 
-std::map<int,Task>::const_iterator Tomato::endForTask() {
-  return tasks.end();
+std::map<int,Task>::const_iterator Tomato::EndForTask() {
+  return tasks_.end();
 }
 
 
-void Tomato::loadData() {
+void Tomato::LoadData() {
   std::wifstream win;
   win.open(DATA_PATH, std::ios::in);
   Data tmp;
   while (win >> tmp) {
-    datas.push_back(tmp);
+    datas_.push_back(tmp);
   }
 }
 
-void Tomato::saveData() {
+void Tomato::SaveData() {
   std::wofstream wout;
   wout.open(DATA_PATH, std::ios::out);
-  for (std::vector<Data>::iterator i = datas.begin(); i != datas.end(); ++i) {
+  for (std::vector<Data>::iterator i = datas_.begin(); i != datas_.end(); ++i) {
     wout << *i << std::endl;
   }
 }
 
 
-std::vector<DataTime>::const_iterator Tomato::beginForDataTime() {
-  return data_times.begin();
+std::vector<DataTime>::const_iterator Tomato::BeginForDataTime() {
+  return data_times_.begin();
 }
 
-std::vector<DataTime>::const_iterator Tomato::endForDataTime() {
-  return data_times.end();
+std::vector<DataTime>::const_iterator Tomato::EndForDataTime() {
+  return data_times_.end();
 }
 
-void Tomato::flushDataTime() {
-  data_times.clear();
+void Tomato::FlushDataTime() {
+  data_times_.clear();
 
   time_t now = time(NULL);
 	DataTime result;
-  for (std::vector<Data>::iterator i = datas.begin(); i != datas.end(); ++i) {
-    result = Data::toDataTime(now, *i);
-    if (result.day_offset > -1) {
-        data_times.push_back(result);
+  for (std::vector<Data>::iterator i = datas_.begin(); i != datas_.end(); ++i) {
+    result = Data::ToDataTime(now, *i);
+    if (result.basic_data_time.day_offset > -1) {
+        data_times_.push_back(result);
     }
   }
 }
