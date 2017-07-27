@@ -55,40 +55,61 @@ public:
 };
 */
 
+
 namespace tomato {
+
+//static int ID;
+
 struct Task {
-  Task(const std::wstring& tag = L"", const std::wstring& name = L"",
-       const int& needing_time = 1);
+  Task();
+  void Initialize(const std::wstring& tag, const std::wstring& name,
+                  const int needing_time = 1);
 
   friend std::wistream& operator>>(std::wistream& in, Task& task);
   friend std::wostream& operator<<(std::wostream& out, const Task& task);
 
-  static int ID;
-
   int id;
   int using_time;
+  int needing_time;
   bool choosed;
   bool finished;
   time_t creating_time;
   time_t finishing_time;
   std::wstring tag;
   std::wstring name;
-  int needing_time;
 };
 
-struct Time {
+struct DataTime {
   //Time(std::wstring tag, std::wstring name, int dayOffset, 
-  int dayOffset;
-  int startMinute;
-  int endMinute;
+  int day_offset;
+  int start_minute;
+  int end_minute;
   std::wstring tag;
   std::wstring name;
 };
 
 struct Data {
-  Data(const std::wstring& tag, const std::wstring& name, const int work_time,
-       const int rest_time, const int flag = 0);
-  //void Initialize(std::wstring tag_, std::wstring name_, int flag=0);
+  //Data(const std::wstring& tag, const std::wstring& name, const int work_time,
+       //const int rest_time, const int flag = 0);
+  void Initialize(const std::wstring& tag, const std::wstring& name,
+                  const int work_time = 25, const int rest_time = 5,
+                  const int flag = 0);
+
+  static DataTime toDataTime(const time_t now, const Data& data) {
+      DataTime result;
+      if (now < data.start_time) {
+          result.day_offset = -1;
+          return result;
+      }
+      tm* tmp = localtime(&data.start_time);
+      result.start_minute = tmp->tm_hour * 60 + tmp->tm_min;
+      result.end_minute = result.start_minute + data.work_time + data.rest_time;
+      result.day_offset = now/86400 - data.start_time/86400;
+      result.tag = data.tag;
+      result.name = data.name;
+      return result;
+  }
+
   friend std::wistream& operator>>(std::wistream& in, Data& data);
   friend std::wostream& operator<<(std::wostream& out, const Data& data);
 

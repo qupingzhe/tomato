@@ -5,40 +5,42 @@
 #include <vector>
 #include "task.h"
 
-class Tomato
-{
+namespace tomato {
+
+class Tomato {
 public:
-	Tomato( void );
-	~Tomato( void );
-	void load( void );
+	Tomato();
+	~Tomato();
+	void load();
 
-	int addTask( Task task );
-	Task getTask( int id );
-	std::map<int,Task>::const_iterator beginForTask() {
-		return tasks.begin();
-	}
-	std::map<int,Task>::const_iterator endForTask() {
-		return tasks.end();
-	}
+	void start(int work_time, int rest_time);
+	void end();
+	void chooseTask(int id, bool status);
+	void finishTask(int id, bool status);
 
-	std::vector<TaskData>::const_iterator beginForTaskData( void ) {
-		return taskDatas.begin();
-	}
-	std::vector<TaskData>::const_iterator endForTaskData( void ) {
-		return taskDatas.end();
-	}
+  bool hasTask(int id);
+	int addTask(Task task);
+	Task getTask(int id);
 
-	void flushTaskData( int dayOffset = 7 );
-	void flushTask( void );
+  void loadTask();
+	void saveTask();
+	std::map<int,Task>::const_iterator beginForTask();
+	std::map<int,Task>::const_iterator endForTask();
 
-	void chooseTask( int id, bool status );
-	void finishTask( int id, bool status );
-	void start( int woringTime, int restingTime );
-	void end( void );
+  void loadData();
+	void saveData();
+
+	std::vector<DataTime>::const_iterator beginForDataTime();
+	std::vector<DataTime>::const_iterator endForDataTime();
+  void flushDataTime();
+
 private:
-	bool isIncludeDays( tm* old, tm* now, int dayOffset, TaskData* result );
+	//bool isIncludeDays(tm* old, tm* now, int dayOffset, TaskData* result);
 	std::map<int, Task> tasks;
-	std::vector<TaskData> taskDatas;
+	std::vector<DataTime> data_times;
+  std::vector<Data> datas;
 };
+
+}
 
 #endif

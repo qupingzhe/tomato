@@ -102,23 +102,38 @@ TaskData::TaskData( BasicTaskData taskData ) : BasicTaskData(taskData)
 
 namespace tomato {
 
-int Task::ID = 0;
-
-Task::Task(const std::wstring& tag, const std::wstring& name, const int& needing_time)
-    :tag(tag), name(name), needing_time(needing_time) {
-  id = ++ID;
+Task::Task() {
+  id = -1;
   using_time = 0;
+  needing_time = 1;
   choosed = false;
   finished = false;
-  creating_time = time(NULL);
+  creating_time = 0;
   finishing_time = 0;
+  tag = L"";
+  name = L"";
+}
+
+void Task::Initialize(const std::wstring& tag, const std::wstring& name,
+                      const int needing_time) {
+  this->id = -1;
+  this->using_time = 0;
+  this->choosed = false;
+  this->finished = false;
+  this->creating_time = time(NULL);
+  this->finishing_time = 0;
+  this->tag = tag;
+  this->name = name;
+  this->needing_time = needing_time;
 }
 
 std::wistream& operator>>(std::wistream& in, Task& task) {
   wchar_t tmp;
   in >> tmp >> task.using_time >> task.needing_time;
   in >> task.creating_time >> task.finishing_time;
+  in.imbue(std::locale("zh_CN.UTF-8"));
   in >> task.tag >> task.name;
+  in.imbue(std::locale("C"));
   if (tmp == L'#') {
     task.finished = true;
   } else {
@@ -140,25 +155,44 @@ std::wostream& operator<<(std::wostream& out, const Task& task) {
   }
   out << tmp << L" " << task.using_time << L" " << task.needing_time << L" ";
   out << task.creating_time << L" " << task.finishing_time << L" ";
+  out.imbue(std::locale("zh_CN.UTF-8"));
   out << task.tag << L" " << task.name;
+  out.imbue(std::locale("C"));
   return out;
 }
 
+/*
 Data::Data(const std::wstring& tag, const std::wstring& name, const int work_time,
      const int rest_time, const int flag) : tag(tag), name(name),
      work_time(work_time), rest_time(rest_time), flag(flag) {
   start_time = time(NULL);
 }
+*/
+
+void Data::Initialize(const std::wstring& tag, const std::wstring& name,
+                      const int work_time, const int rest_time, const int flag) {
+  this->tag = tag;
+  this->name = name;
+  this->work_time = work_time;
+  this->rest_time = rest_time;
+  this->flag = flag;
+  this->start_time = time(NULL);
+}
 
 std::wistream& operator>>(std::wistream& in, Data& data) {
-  in >> data.start_time >> data.work_time >> data.rest_time;
-  in >> data.flag >> data.tag >> data.name;
+  in >> data.start_time >> data.work_time >> data.rest_time >> data.flag;
+  in.imbue(std::locale("zh_CN.UTF-8"));
+  in >> data.tag >> data.name;
+  in.imbue(std::locale("C"));
   return in;
 }
 
 std::wostream& operator<<(std::wostream& out, const Data& data) {
-  out << data.start_time << L" " << data.work_time << L" " << data.rest_time;
-  out << L" " << data.flag << L" " << data.tag << L" " << data.name;
+  out << data.start_time << L" " << data.work_time << L" " << data.rest_time
+      << L" " << data.flag << L" ";
+  out.imbue(std::locale("zh_CN.UTF-8"));
+  out << data.tag << L" " << data.name;
+  out.imbue(std::locale("C"));
   return out;
 }
 
