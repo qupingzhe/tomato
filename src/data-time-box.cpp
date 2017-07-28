@@ -5,7 +5,8 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-#include "data-time-widget.h"
+//#include "data-time-widget.h"
+#include "configuration.h"
 
 namespace tomato {
 
@@ -25,14 +26,15 @@ void DataTimeCanvas::paintEvent(QPaintEvent* event) {
 	QPainter painter(this);
 	painter.setPen(Qt::NoPen);
 
-	QString no_tag = QString::fromStdWString(L"空");
+	//QString no_tag = QString::fromStdWString(L"空");
 
 	int now_minute = start_minute_;
   int tmp;
 	for (std::vector<QDataTime>::iterator i = data_times_.begin();
 			i != data_times_.end(); ++i) {
 		if (now_minute < (i->basic_data_time).start_minute) {
-			painter.setBrush(QBrush(DataTimeWidget::GetColor(no_tag), Qt::SolidPattern));
+			painter.setBrush(QBrush(g_configuration.GetColor(Configuration::NO_USING_TAG),
+                       Qt::SolidPattern));
       tmp = (i->basic_data_time).start_minute;
       if (tmp > end_minute_) {
         tmp = end_minute_;
@@ -58,7 +60,7 @@ void DataTimeCanvas::paintEvent(QPaintEvent* event) {
     if (tmp > end_minute_) {
       tmp = end_minute_;
     }
-   	painter.setBrush(QBrush(DataTimeWidget::GetColor(i->tag), Qt::SolidPattern));
+   	painter.setBrush(QBrush(g_configuration.GetColor(i->tag), Qt::SolidPattern));
     painter.drawRect(now_minute - start_minute_, 0, tmp - now_minute, 20);
     utilization_minutes += tmp - now_minute;
     now_minute = tmp;
@@ -73,7 +75,8 @@ void DataTimeCanvas::paintEvent(QPaintEvent* event) {
 	}
 
 	//int end_minute = 900;
-  painter.setBrush(QBrush(DataTimeWidget::GetColor(no_tag), Qt::SolidPattern));
+  painter.setBrush(QBrush(g_configuration.GetColor(Configuration::NO_USING_TAG),
+                   Qt::SolidPattern));
   painter.drawRect(now_minute - start_minute_, 0, end_minute_ - now_minute, 20);
 
   /*

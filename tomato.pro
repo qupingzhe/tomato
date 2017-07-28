@@ -19,7 +19,8 @@ HEADERS += include/main-window.h \
            include/timer.h \
            include/task-box.h \
            include/data-time-widget.h \
-           include/data-time-box.h
+           include/data-time-box.h \
+           include/configuration.h
 
 SOURCES += src/main.cpp \
            src/main-window.cpp \
@@ -33,7 +34,8 @@ SOURCES += src/main.cpp \
            src/timer.cpp \
            src/task-box.cpp \
            src/data-time-widget.cpp \
-           src/data-time-box.cpp
+           src/data-time-box.cpp \
+           src/configuration.cpp
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp

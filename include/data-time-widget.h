@@ -11,12 +11,14 @@ class QVBoxLayout;
 namespace tomato {
 
 class DataTimeBox;
+
 class DataTimeWidget : public QWidget {
 	Q_OBJECT
 public:
 	DataTimeWidget(QWidget* parent = NULL);
 	~DataTimeWidget();
 
+  /*
 	static QColor GetColor(QString tag) {
 		static const QString book = QString::fromStdWString(L"看书");
 		static const QString blog = QString::fromStdWString(L"博客");
@@ -42,6 +44,7 @@ public:
 		}
 		return QColor(value);
 	}
+  */
 
 public slots:
 	void UpdateDataTime(const std::vector<QDataTime>& data_times);

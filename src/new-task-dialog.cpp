@@ -9,6 +9,8 @@
 #include <QComboBox>
 #include <QFile>
 
+#include "configuration.h"
+
 namespace tomato {
 
 NewTaskDialog::NewTaskDialog(QWidget* parent) : QDialog(parent) {
@@ -54,6 +56,12 @@ NewTaskDialog::~NewTaskDialog() {
 }
 
 void NewTaskDialog::Load() {
+  for (std::vector<QConfigurationData>::const_iterator i = g_configuration.BeginForConfigurationData();
+      i != g_configuration.EndForConfigurationData(); ++i) {
+    tag_->addItem(i->tag);
+  }
+
+  /*
 	QFile file( "./etc/tomato.conf" );
 	if (!file.open(QIODevice::ReadOnly)) {
 		return ;
@@ -64,6 +72,7 @@ void NewTaskDialog::Load() {
 		tag_->addItem(in.readLine());
 	}
 	file.close();
+  */
 }
 
 void NewTaskDialog::Add() {
