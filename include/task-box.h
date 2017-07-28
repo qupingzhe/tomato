@@ -1,5 +1,5 @@
-#ifndef TASK_BOX_H
-#define TASK_BOX_H
+#ifndef TOMATO_TASK_BOX_H
+#define TOMATO_TASK_BOX_H
 
 #include <QHBoxLayout>
 #include "qtask.h"

@@ -1,5 +1,5 @@
-#ifndef NEW_TASK_DIALOG_H
-#define NEW_TASK_DIALOG_H
+#ifndef TOMATO_NEW_TASK_DIALOG_H
+#define TOMATO_NEW_TASK_DIALOG_H
 
 #include <QDialog>
 #include "qtask.h"

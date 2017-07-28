@@ -1,5 +1,5 @@
-#ifndef TOMATO_H
-#define TOMATO_H
+#ifndef TOMATO_TOMATO_H
+#define TOMATO_TOMATO_H
 
 #include <map>
 #include <vector>

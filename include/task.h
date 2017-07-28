@@ -1,6 +1,5 @@
-
-#ifndef TASK_H
-#define TASK_H
+#ifndef TOMATO_TASK_H
+#define TOMATO_TASK_H
 
 #include <string>
 

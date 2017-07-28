@@ -126,6 +126,7 @@ std::wistream& operator>>(std::wistream& in, BasicTask& basic_task) {
   wchar_t tmp;
   in >> tmp >> basic_task.using_time >> basic_task.needing_time;
   in >> basic_task.creating_time >> basic_task.finishing_time;
+
   if (tmp == L'#') {
     basic_task.finished = true;
   } else {

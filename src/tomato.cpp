@@ -8,8 +8,8 @@
 namespace tomato {
 //static int DAYS[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-static const char TASK_PATH[] = "test.task";
-static const char DATA_PATH[] = "test.data";
+static const char TASK_PATH[] = "task/test.task";
+static const char DATA_PATH[] = "data/test.data";
 
 static int TASK_ID = 0;
 
@@ -86,6 +86,11 @@ void Tomato::ChooseTask(int id, bool status) {
 void Tomato::FinishTask(int id, bool status) {
   if (HasTask(id)) {
     tasks_[id].basic_task.finished = status;
+    if (status) {
+      tasks_[id].basic_task.finishing_time = time(NULL);
+    } else {
+      tasks_[id].basic_task.finishing_time = 0;
+    }
   }
 }
 
@@ -95,7 +100,9 @@ bool Tomato::HasTask(int id) {
 }
 
 int Tomato::AddTask(Task task) {
+  //task.Initialize();
 	task.basic_task.id = ++TASK_ID;
+  task.basic_task.creating_time = time(NULL);
 	tasks_[task.basic_task.id] = task;
 	return task.basic_task.id;
 }

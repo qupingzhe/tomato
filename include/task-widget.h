@@ -1,5 +1,5 @@
-#ifndef TASK_WIDGET_H
-#define TASK_WIDGET_H
+#ifndef TOMATO_TASK_WIDGET_H
+#define TOMATO_TASK_WIDGET_H
 
 #include <QWidget>
 

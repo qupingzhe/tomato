@@ -1,5 +1,5 @@
-#ifndef Q_TASK_H
-#define Q_TASK_H
+#ifndef TOMATO_QTASK_H
+#define TOMATO_QTASK_H
 
 #include <QString>
 #include "task.h"

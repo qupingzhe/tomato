@@ -33,7 +33,7 @@ void QTomato::FlushTask() {
 }
 
 void QTomato::FlushDataTime() {
-	//tomato->flushTaskData();
+	tomato_->FlushDataTime();
 	data_times_.clear();
 	for (std::vector<DataTime>::const_iterator i = tomato_->BeginForDataTime();
 			i != tomato_->EndForDataTime(); ++i ) {

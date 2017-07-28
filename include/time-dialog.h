@@ -1,5 +1,5 @@
-#ifndef TIME_DIALOG_H
-#define TIME_DIALOG_H
+#ifndef TOMATO_TIME_DIALOG_H
+#define TOMATO_TIME_DIALOG_H
 
 #include <QDialog>
 #include <QString>

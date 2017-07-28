@@ -1,5 +1,5 @@
-#ifndef TASK_DATA_WIDGET_H
-#define TASK_DATA_WIDGET_H
+#ifndef TOMATO_DATA_TIME_WIDGET_H
+#define TOMATO_DATA_TIME_WIDGET_H
 
 #include <QWidget>
 #include <vector>
@@ -16,6 +16,7 @@ class DataTimeWidget : public QWidget {
 public:
 	DataTimeWidget(QWidget* parent = NULL);
 	~DataTimeWidget();
+
 	static QColor GetColor(QString tag) {
 		static const QString book = QString::fromStdWString(L"看书");
 		static const QString blog = QString::fromStdWString(L"博客");
@@ -41,6 +42,7 @@ public:
 		}
 		return QColor(value);
 	}
+
 public slots:
 	void UpdateDataTime(const std::vector<QDataTime>& data_times);
 private:

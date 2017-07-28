@@ -7,11 +7,11 @@ class QTimer;
 
 namespace tomato {
 
-class TomatoTimer : public QObject {
+class Timer : public QObject {
 	Q_OBJECT
 public:
-	TomatoTimer();
-	~TomatoTimer();
+	Timer();
+	~Timer();
 	void SetTimer(int workTime, int restTime);
 signals:
 	void FinishWork();

@@ -1,5 +1,5 @@
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#ifndef TOMATO_MAIN_WINDOW_H
+#define TOMATO_MAIN_WINDOW_H
 
 #include <QMainWindow>
 
@@ -14,7 +14,7 @@ class TaskWidget;
 class DataTimeWidget;
 class NewTaskDialog;
 class TimeDialog;
-class TomatoTimer;
+class Timer;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -47,7 +47,7 @@ private:
 	QMenu* data_menu_;
 	QAction* show_data_;
 
-	TomatoTimer* timer_;
+	Timer* timer_;
 	int rest_time_;
 	int work_time_;
 };

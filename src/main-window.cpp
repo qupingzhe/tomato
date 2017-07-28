@@ -16,7 +16,7 @@ namespace tomato {
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	tomato_ = new QTomato;
-	timer_ = new TomatoTimer;
+	timer_ = new Timer;
 
 	main_widget_ = new QTabWidget;
 	setCentralWidget(main_widget_);
@@ -62,7 +62,6 @@ MainWindow::~MainWindow() {
 	delete show_data_;
 	delete data_menu_;
 	delete data_time_widget_;
-
 	delete task_widget_;
 	delete tomato_;
 
@@ -118,7 +117,7 @@ void MainWindow::ConnectTimer() {
 			this, SLOT(FinishRest()));
 	connect(timer_, SIGNAL(DisplayTime(int)),
 			work_dialog_, SLOT(ChangeTime(int)));
-	connect(timer_, SIGNAL(displayTime(int)),
+	connect(timer_, SIGNAL(DisplayTime(int)),
 			rest_dialog_, SLOT(ChangeTime(int)));
 }
 

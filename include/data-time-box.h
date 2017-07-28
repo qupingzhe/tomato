@@ -1,5 +1,5 @@
-#ifndef Task_DATA_BOX_H
-#define TASK_DATA_BOX_H
+#ifndef TOMATO_DATA_TIME_BOX_H
+#define TOMATO_DATA_TIME_BOX_H
 
 #include <QWidget>
 
@@ -13,9 +13,12 @@ namespace tomato {
 class DataTimeCanvas : public QWidget {
 	Q_OBJECT
 public:
-	DataTimeCanvas(QWidget* parent = NULL);
+	DataTimeCanvas(int start_minute, int end_minute, QWidget* parent = NULL);
 	void paintEvent(QPaintEvent* event);
 	std::vector<QDataTime>& data_times();
+  int GetMinimumMinute(const QDataTime& data_time);
+  int start_minute_;
+  int end_minute_;
 signals:
 	void ChangedUtilizationRate(int rate);
 private:
@@ -28,7 +31,8 @@ class DataTimeBox : public QWidget {
 public:
 	static const QColor NO_USING_COLOR;
 
-	DataTimeBox(int day_offset, QWidget* parent = NULL);
+	DataTimeBox(int day_offset,int start_minute, int end_minute,
+              QWidget* parent = NULL);
 	~DataTimeBox();
 	std::vector<QDataTime>& data_times();
 private slots:

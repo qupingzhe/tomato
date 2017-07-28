@@ -1,5 +1,5 @@
-#ifndef Q_TOMATO_H
-#define Q_TOMATO_H
+#ifndef TOMATO_QTOMATO_H
+#define TOMATO_QTOMATO_H
 
 
 #include <QObject>
