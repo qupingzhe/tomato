@@ -107,17 +107,24 @@ struct Data {
                   const int work_time = 25, const int rest_time = 5,
                   const int flag = 0);
 
+  static BasicDataTime ToBasicDataTime(const time_t now, const time_t start_time,
+                                       const time_t pass_time) {
+    BasicDataTime basic_data_time;
+    if (now < start_time) {
+        basic_data_time.day_offset = -1;
+        return basic_data_time;
+    }
+    tm* tmp = localtime(&start_time);
+    basic_data_time.start_minute = tmp->tm_hour * 60 + tmp->tm_min;
+    basic_data_time.end_minute = basic_data_time.start_minute + pass_time;
+    basic_data_time.day_offset = now/86400 - start_time/86400;
+    return basic_data_time;
+  }
+
   static DataTime ToDataTime(const time_t now, const Data& data) {
       DataTime result;
-      if (now < data.start_time) {
-          result.basic_data_time.day_offset = -1;
-          return result;
-      }
-      tm* tmp = localtime(&data.start_time);
-      result.basic_data_time.start_minute = tmp->tm_hour * 60 + tmp->tm_min;
-      result.basic_data_time.end_minute = result.basic_data_time.start_minute
-                                          + data.work_time + data.rest_time;
-      result.basic_data_time.day_offset = now/86400 - data.start_time/86400;
+      result.basic_data_time = ToBasicDataTime(now, data.start_time,
+                                               data.rest_time + data.work_time);
       result.tag = data.tag;
       result.name = data.name;
       return result;

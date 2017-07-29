@@ -10,6 +10,7 @@
 #include "data-time-widget.h"
 #include "time-dialog.h"
 #include "timer.h"
+#include "task-status-widget.h"
 
 
 namespace tomato {
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 
 	new_task_dialog_ = new NewTaskDialog;
 	data_time_widget_ = new DataTimeWidget;
+  task_status_widget_ = new TaskStatusWidget;
 
 	work_dialog_ = new TimeDialog;
 	work_dialog_->setWindowTitle("working");
@@ -60,8 +62,10 @@ MainWindow::~MainWindow() {
 	delete file_menu_;
 	delete new_task_dialog_;
 	delete show_data_;
+  delete show_task_status_;
 	delete data_menu_;
 	delete data_time_widget_;
+  delete task_status_widget_;
 	delete task_widget_;
 	delete tomato_;
 
@@ -86,17 +90,23 @@ void MainWindow::CreateMenuBar() {
 			new_task_dialog_, SLOT(show()));
 	data_menu_ = new QMenu(tr("data"));
 	show_data_ = new QAction(tr("show data"), this);
+  show_task_status_ = new QAction(tr("show task status"), this);
 	data_menu_->addAction(show_data_);
+  data_menu_->addAction(show_task_status_);
 	menuBar()->addMenu(data_menu_);
 	connect(show_data_, SIGNAL(triggered()),
 			data_time_widget_, SLOT(show()));
+  connect(show_task_status_, SIGNAL(triggered()),
+      task_status_widget_, SLOT(show()));
 }
 
 void MainWindow::ConnectDataStream() {
 	connect(tomato_, SIGNAL(UpdateTask(const std::vector<QTask>&)),
 			task_widget_, SLOT(UpdateTask(const std::vector<QTask>&)));
 	connect(tomato_, SIGNAL(UpdateDataTime(const std::vector<QDataTime>&)),
-			data_time_widget_, SLOT(UpdateDataTime(const std::vector<QDataTime>)));
+			data_time_widget_, SLOT(UpdateDataTime(const std::vector<QDataTime>&)));
+	connect(tomato_, SIGNAL(UpdateTask(const std::vector<QTask>&)),
+			task_status_widget_, SLOT(UpdateTask(const std::vector<QTask>&)));
 }
 
 void MainWindow::ConnectUpdateData() {

@@ -15,6 +15,7 @@ class DataTimeWidget;
 class NewTaskDialog;
 class TimeDialog;
 class Timer;
+class TaskStatusWidget;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -37,6 +38,7 @@ private:
 	QTabWidget* main_widget_;
 	TaskWidget* task_widget_;
 	DataTimeWidget* data_time_widget_;
+  TaskStatusWidget* task_status_widget_;
 	TimeDialog* work_dialog_;
 	TimeDialog* rest_dialog_;
 
@@ -46,6 +48,7 @@ private:
 	QAction* add_task_;
 	QMenu* data_menu_;
 	QAction* show_data_;
+  QAction* show_task_status_;
 
 	Timer* timer_;
 	int rest_time_;

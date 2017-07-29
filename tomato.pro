@@ -20,7 +20,8 @@ HEADERS += include/main-window.h \
            include/task-box.h \
            include/data-time-widget.h \
            include/data-time-box.h \
-           include/configuration.h
+           include/configuration.h \
+           include/task-status-widget.h
 
 SOURCES += src/main.cpp \
            src/main-window.cpp \
@@ -35,7 +36,8 @@ SOURCES += src/main.cpp \
            src/task-box.cpp \
            src/data-time-widget.cpp \
            src/data-time-box.cpp \
-           src/configuration.cpp
+           src/configuration.cpp \
+           src/task-status-widget.cpp
 
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
