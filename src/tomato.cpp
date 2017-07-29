@@ -102,7 +102,9 @@ bool Tomato::HasTask(int id) {
 int Tomato::AddTask(Task task) {
   //task.Initialize();
 	task.basic_task.id = ++TASK_ID;
-  task.basic_task.creating_time = time(NULL);
+  if (task.basic_task.creating_time == 0) {
+    task.basic_task.creating_time = time(NULL);
+  }
 	tasks_[task.basic_task.id] = task;
 	return task.basic_task.id;
 }
